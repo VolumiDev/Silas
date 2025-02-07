@@ -1,17 +1,38 @@
-﻿@model Silas.Models.Company
+﻿@model Silas.Models.Offers.Offer
 
 @{
     Layout = "_GenericLayout";
-    ViewData["Title"] = "Detalles de la Empresa";
+    ViewData["Title"] = "Detalles de la oferta";
 }
 
-<h2>Detalles de la Empresa</h2>
-
-<div>
-    <p><strong>ID Usuario:</strong> @Model.IdUser</p>
-    <p><strong>Dirección:</strong> @Model.Address</p>
-    <p><strong>Teléfono:</strong> @Model.Telephone</p>
-    <p><strong>Contacto:</strong> @Model.Contact</p>
-    <p><strong>Móvil:</strong> @Model.Mobile</p>
-    <p><strong>Estado:</strong> @(Model.Status == 1 ? "Activo" : "Inactivo")</p>
-</div>
+<h2>Detalles de la Oferta</h2>
+<form>
+    <div class="form-group">
+        <label>ID</label>
+        <input type="text" class="form-control" value="@Model.id" readonly />
+    </div>
+    <div class="form-group">
+        <label>Título</label>
+        <input type="text" class="form-control" value="@Model.title" readonly />
+    </div>
+    <div class="form-group">
+        <label>Descripción</label>
+        <textarea class="form-control" rows="3" readonly>@Model.description</textarea>
+    </div>
+    <div class="form-group">
+        <label>Requisitos</label>
+        <textarea class="form-control" rows="3" readonly>@Model.requiriments</textarea>
+    </div>
+    <div class="form-group">
+        <label>Fecha</label>
+        <input type="text" class="form-control" value="@Model.date.ToString("dd/MM/yyyy")" readonly />
+    </div>
+    <div class="form-group">
+        <label>Ubicación</label>
+        <input type="text" class="form-control" value="@Model.location" readonly />
+    </div>
+    <div class="form-group">
+        <label>ID Empresa</label>
+        <input type="text" class="form-control" value="@Model.id_company" readonly />
+    </div>
+</form>

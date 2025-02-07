@@ -27,7 +27,7 @@ namespace Silas.ViewComponents
         
             if (userRole=="company")
             {
-                List<Offer> offers = await _offerService.GetOffersByCompanyIdAsync(11);
+                List<Offer> offers = await _offerService.GetOffersByCompanyIdAsync(userId);
                 var model = new LeftPanelViewModel
                 {
                     userRole = userRole,
@@ -38,10 +38,11 @@ namespace Silas.ViewComponents
             }
             else if (userRole== "student")
             {
+                List<Offer> last5Offers= await _offerService.GetCustomOffersForThisStudentAsync(userId);
                 var model = new LeftPanelViewModel
                 {
                     userRole = userRole,
-                    datalist = []
+                    datalist = last5Offers
                 };
                 return View("LeftPanel", model);
             }

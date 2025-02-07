@@ -39,15 +39,27 @@ namespace Silas.Models.Offers
                 return new List<Offer>();
             }
         }
-        //public async Task<List<Offer>> GetCustomOffersForThisStudent(int userId)
-        //{
-        //    var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/list5LatestOffers.php?id={userId}");
-        //    response.EnsureSuccessStatusCode();
 
-        //    var json = await response.Content.ReadAsStringAsync();
-        //    var offers = JsonSerializer.Deserialize<List<Offer>>(json);
+        public async Task<List<Offer>> GetCustomOffersForThisStudentAsync(int userId)
+        {
+            try
+            {
+                //LAS 5 ÚLTIMAS
+                var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/list5LatestOffers.php?id_student={userId}");
+                response.EnsureSuccessStatusCode();
 
-        //}
+                var json = await response.Content.ReadAsStringAsync();
+                var offers = JsonSerializer.Deserialize<List<Offer>>(json);
+                return offers ?? new List<Offer>();
+            }
+
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<Offer>();
+            }
+        }
+
     }
 
 }
