@@ -1,0 +1,59 @@
+﻿@{
+    // Aquí normalmente Layout = null si queremos que este sea el layout “base” no?
+    // SIN HERENCIA
+    @model Silas.Models.Usuarios.UserValidatorResponse;  
+
+    Layout = null;
+
+    // Pruebas
+    var userRole = Model.category;
+    var userName = Model.name;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - SILAS</title>
+    <!-- EL CSS ES "generic.css" -->
+    <link href="~/css/generic.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body class="bg_blur">
+
+    <!-- CONTENEDOR PPAL -->
+    <div id="generic_body">
+
+        <!-- HEADER -->
+        @Html.Partial("_HeaderPartial", (Model.category, Model.name))
+
+        <!-- CONTENEDOR (MAIN,LATDER,LATIZQ) -->
+        <div id="generic_central_panel">
+
+            <!-- LATERAL IZQUIERDO -->
+            <div id="left_panel">
+
+                <!-- IMPORTANTE, "LeftPanel" ESTÁ LLAMANDO REALMENTE A LeftPanelViewComponent, AL MÉTODO InvokeAsync que tenemos allí
+                AL QUE LE ESTAMOS ENVIANDO userRole y userId
+                                -->
+                @await Component.InvokeAsync("LeftPanel", new { userRole = Model.category, userId = Model.id })
+            </div>
+
+            <!-- MAIN -> Q SERÁ EL CONTENIDO Q PONGA LA VISTA HIJA -->
+            <div id="central_panel">
+                @Html.Partial("Generic")
+            </div>
+
+            <!-- LATERAL DERECHO -->
+            <div id="right_panel">
+                @await Component.InvokeAsync("RightPanel", new { userRole = Model.category, userId = Model.id })
+            </div>
+        </div>
+
+        <!-- SIN FOOTER DE MOMENTO, AUNQUE CONSIDERO QUE ALGO DEBERÍA HABER QUIZÁ COMO APOYO -->
+        <!--  (ARROBA)Html.Partial("_FooterPartial", userRole)  -->
+    </div>
+
+</body>
+</html>

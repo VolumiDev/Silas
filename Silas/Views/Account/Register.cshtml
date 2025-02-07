@@ -1,0 +1,36 @@
+﻿@model Silas.Models.Usuarios.User // Importamos el modelo de usuario
+@{
+    Layout = "_Layout"; // Usa el mismo layout que en Login
+    ViewData["Title"] = "Registro";
+}
+
+<div class="login-box">
+    <div class="login-header">
+        <img src="/images/logoSalesianos.jpg" alt="Logo" />
+        <h2>Registro de Usuario</h2>
+        <p>Completa la información para registrarte</p>
+    </div>
+
+    <form method="post" asp-action="Register">
+        
+        <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="text" asp-for="email" required />
+            <span asp-validation-for="email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" asp-for="password" required />
+            <span asp-validation-for="password" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+    @if (!string.IsNullOrEmpty(ViewBag.Mensaje)) ;
+    <!-- Mostramos mensaje de confirmación de registro -->
+    <p>@ViewBag.Mensaje</p>
+
+
+    <!-- BOTÓN VOLVER -->
+    <br />
+    <a href="/Account/Login" class="btn btn-secondary">Volver al login</a>
+</div>
