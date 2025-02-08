@@ -9,6 +9,7 @@ namespace Silas.ViewModels
         public List<ApplyByCompany> companyApplyList { get; set; }
 
         public List<ApplyByStudent> studentApplyList { get; set; }
+        public List<ApplyByAdmin> adminApplyList { get; set; }
 
 
     }

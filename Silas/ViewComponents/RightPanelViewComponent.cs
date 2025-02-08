@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Silas.Models;
+using Silas.Models.Admin;
 using Silas.Models.Companies;
 using Silas.Models.Student;
 using Silas.ViewModels;
@@ -15,11 +16,13 @@ namespace Silas.ViewComponents
         
 		private readonly CompanyService _companyService;
 		private readonly StudentService _studentService;
+        private readonly AdminService _adminService;
 
-        public RightPanelViewComponent(CompanyService companyService, StudentService studentService)
+        public RightPanelViewComponent(CompanyService companyService, StudentService studentService, AdminService adminService)
 		{
 			_companyService = companyService;
             _studentService = studentService;
+            _adminService = adminService;
         }
 
 
@@ -46,19 +49,21 @@ namespace Silas.ViewComponents
                 var appliesList = await _studentService.ListAplliesByStudentId(userId);
                 var model = new RightPanelViewModel
                 {
-                    userRole = "userRole",
+                    userRole = userRole,
                     studentApplyList = appliesList.Applies
                 };
                 return View("RightPanel", model);
             }
             else
             {
-
+                var appliesList = await _adminService.GetAppliesToAdmin();
                 var model = new RightPanelViewModel
                 {
-                    userRole = "userRole",
-                    companyApplyList = []
+                    userRole = "admin",
+                    adminApplyList = appliesList.Applies
                 };
+
+
                 //ESTE ES EL ADMIN
                 return View("RightPanel", model);
 

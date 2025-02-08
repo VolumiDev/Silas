@@ -34,11 +34,15 @@ namespace Silas.Controllers
             //NECESITAMOS EVALUAR EN ESTA VISTA, SI EL STATUS DEL USER QUE RECIBIMOS ES 0, O 1, EN CASO DE SER 0
             //NOS LLEVA A UN VIEW DE ERROR, EN CASO DE SER 1 PROCEDEMOS NORMALMENTE
             
+            
 
-
-            if (response.category == "student" || response.category == "company")
+            if (response.category == "student" || response.category == "company" || response.category == "admin")
             {
                
+                if(response.user_status == 0)
+                {
+                    return View("InactiveAccount");
+                }
 
                 return View("_GenericLayout", response);
 
