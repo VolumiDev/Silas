@@ -3,6 +3,7 @@ using Silas.Models.Offers;
 using Silas.Models.Usuarios;
 using Silas.Models.Companies;
 using Silas.Models.Offers;
+using Silas.Models.Student;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,8 @@ builder.Logging.AddConsole(); // Agrega el log de consola
 // Add services to the container.
 builder.Services.AddHttpClient<UserService>();
 builder.Services.AddHttpClient<CompanyService>();
-builder.Services.AddHttpClient<OfferService>(); // Registro de OfferService
+builder.Services.AddHttpClient<OfferService>();
+builder.Services.AddHttpClient<StudentService>();// Registro de OfferService
 
 builder.Services.AddControllersWithViews();
 

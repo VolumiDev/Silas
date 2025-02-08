@@ -2,7 +2,7 @@
 
 namespace Silas.Models.Applies
 {
-    public class AppliesResponse
+    public class AppliesResponseByStudents
     {
         [JsonPropertyName("status")]
         public long Status { get; set; }
@@ -11,6 +11,6 @@ namespace Silas.Models.Applies
         public string Message { get; set; }
 
         [JsonPropertyName("applies")]
-        public List<Apply> Applies { get; set; }
+        public List<ApplyByStudent> Applies { get; set; }
     }
 }

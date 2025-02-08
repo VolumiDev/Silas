@@ -2,7 +2,7 @@
 
 namespace Silas.Models.Applies
 {
-    public class Apply
+    public class ApplyByCompany
     {
         [JsonPropertyName("id_user")]
         public long IdUser { get; set; }

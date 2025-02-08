@@ -5,7 +5,7 @@
     <h4>Últimos 10 apliques</h4>
 
     <ul>
-        @foreach(var item in Model.datalist)
+        @foreach(var item in Model.companyApplyList)
 		{
 			<li>@item</li>
 		}
@@ -15,22 +15,43 @@
 else if (Model.userRole == "student")
 {
     <h4>MIS 5 ÚLTIMOS APLIQUES (CON COLORES, DE SI ME HAN ACEPTADO, ESTÁN EN PROCESO O ME HAN RECHAZADO</h4>
-    <ul>
-        <li>Oferta 1</li>
-        <li>Oferta 2</li>
-        <!-- EJEMPLO -->
-        <li>Oferta 5</li>
+    <ul class="list-group">
+        @for(int i = 0; i < Model.studentApplyList.Count; i++)
+		{
+            @switch (Model.studentApplyList[i].Status)
+            {
+                case 0:
+                    <li class="list-group-item list-group-item-danger">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") RECHAZADO</p>
+                    </li>
+                    break;
+                case 1:
+                    <li class="list-group-item list-group-item-warning">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") PENDIENTE</p>
+                    </li>
+                    break;
+                case 2:
+                    <li class="list-group-item list-group-item-success">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") ACEPTADO</p>
+                    </li>
+                    break;
+            }
+            
+		})
     </ul>
 }
 else if (Model.userRole == "company")
 {
     <h4>Total de Apliques activas</h4>
     <ul class="list-group">
-        @for (int i = 0 ; i < Model.datalist.Count; i++)
+        @for (int i = 0 ; i < Model.companyApplyList.Count; i++)
         {
             <li class="list-group-item">
-                <p><b>@(i + 1) @Model.datalist[i].Title</b></p>
-                <p>@Model.datalist[i].Name @Model.datalist[i].Surname</p>
+                <p><b>@(i + 1) @Model.companyApplyList[i].Title</b></p>
+                <p>@Model.companyApplyList[i].Name @Model.companyApplyList[i].Surname</p>
             </li>
         }
 
