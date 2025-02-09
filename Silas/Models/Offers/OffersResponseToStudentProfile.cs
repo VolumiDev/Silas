@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Silas.Models.Applies
+namespace Silas.Models.Offers
 {
-    public class AppliesResponse
+    public class OffersResponseToStudentProfile
     {
         [JsonPropertyName("status")]
         public long Status { get; set; }
@@ -10,7 +10,7 @@ namespace Silas.Models.Applies
         [JsonPropertyName("message")]
         public string Message { get; set; }
 
-        [JsonPropertyName("applies")]
-        public List<Apply> Applies { get; set; }
+        [JsonPropertyName("offers")]
+        public List<OffersResponseToStudentProfile> Offers { get; set; }
     }
 }

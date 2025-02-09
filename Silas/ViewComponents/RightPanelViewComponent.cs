@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Silas.Models;
+using Silas.Models.Admin;
 using Silas.Models.Companies;
+using Silas.Models.Student;
 using Silas.ViewModels;
 using System.Reflection;
 
@@ -13,14 +15,18 @@ namespace Silas.ViewComponents
 
         
 		private readonly CompanyService _companyService;
+		private readonly StudentService _studentService;
+        private readonly AdminService _adminService;
 
-        public RightPanelViewComponent(CompanyService companyService)
+        public RightPanelViewComponent(CompanyService companyService, StudentService studentService, AdminService adminService)
 		{
 			_companyService = companyService;
-		}
+            _studentService = studentService;
+            _adminService = adminService;
+        }
 
 
-		public async Task<IViewComponentResult> InvokeAsync(string userRole, int id)
+		public async Task<IViewComponentResult> InvokeAsync(string userRole, int userId)
         {
             // Aquí puedes realizar lógica adicional o cargar datos si es necesario.
             // Por ejemplo, si deseas obtener datos adicionales según el userRole.
@@ -28,34 +34,36 @@ namespace Silas.ViewComponents
 
 
             if (userRole == "company"){
-                var appliesList = await _companyService.ListAplliesByCompanyId(id);
+                var appliesList = await _companyService.ListAplliesByCompanyId(userId);
 
                 var model = new RightPanelViewModel
 			    {
 				    userRole = userRole,
-				    datalist = appliesList
+				    companyApplyList = appliesList
 			    };
 			    return View("RightPanel", model);
 
             }
             else if (userRole == "student")
             {
-
+                var appliesList = await _studentService.ListAplliesByStudentId(userId);
                 var model = new RightPanelViewModel
                 {
-                    userRole = "userRole",
-                    datalist = []
+                    userRole = userRole,
+                    studentApplyList = appliesList.Applies
                 };
                 return View("RightPanel", model);
             }
             else
             {
-
+                var appliesList = await _adminService.GetAppliesToAdmin();
                 var model = new RightPanelViewModel
                 {
-                    userRole = "userRole",
-                    datalist = []
+                    userRole = "admin",
+                    adminApplyList = appliesList.Applies
                 };
+
+
                 //ESTE ES EL ADMIN
                 return View("RightPanel", model);
 

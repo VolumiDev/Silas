@@ -6,8 +6,11 @@ namespace Silas.ViewModels
     {
 
         public string userRole { get; set; }
-        public List<Apply> datalist { get; set; }
+        public List<ApplyByCompany> companyApplyList { get; set; }
 
-         
+        public List<ApplyByStudent> studentApplyList { get; set; }
+        public List<ApplyByAdmin> adminApplyList { get; set; }
+
+
     }
 }

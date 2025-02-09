@@ -42,7 +42,7 @@
 
             <!-- MAIN -> Q SERÁ EL CONTENIDO Q PONGA LA VISTA HIJA -->
             <div id="central_panel">
-                @Html.Partial("Generic")
+                @* @Html.Partial("Generic") *@
             </div>
 
             <!-- LATERAL DERECHO -->
@@ -55,5 +55,24 @@
         <!--  (ARROBA)Html.Partial("_FooterPartial", userRole)  -->
     </div>
 
+
+
+
+
+
+    <!-- Aquí se incluye jQuery antes de cerrar el body -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('.menu_item').click(function(e){
+            e.preventDefault(); // Evita la navegación completa
+            var title = $(this).data('title'); // Captura el título deseado
+            // Llamada AJAX al controlador enviando el parámetro "title"
+            $.get('/NavButtons/OnClick', { title: title }, function(data){
+                $('#central_panel').html(data);
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -2,35 +2,76 @@
 
 @if (Model.userRole == "admin")
 {
-    <h4>Últimos 10 apliques</h4>
+    <h6>Ultimos apliques creados</h6>
+    <ul class="list-group">
+        @for (int i = 0; i < 5; i++)
+        {
+            @switch (Model.adminApplyList[i].StudentsOffersStatus)
+            {
+                case 0:
+                    <li class="list-group-item list-group-item-danger m-2">
+                        <p><b>@(i + 1) @Model.adminApplyList[i].OfferTitle</b></p>
+                        <p>@Model.adminApplyList[i].StudentName - @Model.adminApplyList[i].StudentsOffersDate.ToString("dd/MM/yyyy") RECHAZADO</p>
+                    </li>
+                    break;
+                case 1:
+                    <li class="list-group-item list-group-item-warning m-2">
+                        <p><b>@(i + 1) @Model.adminApplyList[i].OfferTitle</b></p>
+                        <p>@Model.adminApplyList[i].StudentName - @Model.adminApplyList[i].StudentsOffersDate.ToString("dd/MM/yyyy") PENDIENTE</p>
+                    </li>
+                    break;
+                case 2:
+                    <li class="list-group-item list-group-item-success m-2">
+                        <p><b>@(i + 1) @Model.adminApplyList[i].OfferTitle</b></p>
+                        <p>@Model.adminApplyList[i].StudentName - @Model.adminApplyList[i].StudentsOffersDate.ToString("dd/MM/yyyy") ACEPTADO</p>
+                    </li>
+                    break;
+            }
 
-    <ul>
-        @foreach(var item in Model.datalist)
-		{
-			<li>@item</li>
-		}
-
+        }
     </ul>
+    
 }
 else if (Model.userRole == "student")
 {
-    <h4>MIS 5 ÚLTIMOS APLIQUES (CON COLORES, DE SI ME HAN ACEPTADO, ESTÁN EN PROCESO O ME HAN RECHAZADO</h4>
-    <ul>
-        <li>Oferta 1</li>
-        <li>Oferta 2</li>
-        <!-- EJEMPLO -->
-        <li>Oferta 5</li>
+    <h6>MIS 5 ÚLTIMOS APLIQUES</h6>
+    <ul class="list-group">
+        @for(int i = 0; i < Model.studentApplyList.Count; i++)
+		{
+            @switch (Model.studentApplyList[i].Status)
+            {
+                case 0:
+                    <li class="list-group-item list-group-item-danger m-2">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") RECHAZADO</p>
+                    </li>
+                    break;
+                case 1:
+                    <li class="list-group-item list-group-item-warning m-2">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") PENDIENTE</p>
+                    </li>
+                    break;
+                case 2:
+                    <li class="list-group-item list-group-item-success m-2">
+                        <p><b>@(i + 1) @Model.studentApplyList[i].Title</b></p>
+                        <p>@Model.studentApplyList[i].ApplyDate.ToString("dd/MM/yyyy") ACEPTADO</p>
+                    </li>
+                    break;
+            }
+            
+		}
     </ul>
 }
 else if (Model.userRole == "company")
 {
-    <h4>Total de Apliques activas</h4>
+    <h6>APLIQUES</h6>
     <ul class="list-group">
-        @for (int i = 0 ; i < Model.datalist.Count; i++)
+        @for (int i = 0 ; i < Model.companyApplyList.Count; i++)
         {
-            <li class="list-group-item">
-                <p><b>@(i + 1) @Model.datalist[i].Title</b></p>
-                <p>@Model.datalist[i].Name @Model.datalist[i].Surname</p>
+            <li class="list-group-item m-2">
+                <p><b>@(i + 1) @Model.companyApplyList[i].Title</b></p>
+                <p>@Model.companyApplyList[i].Name @Model.companyApplyList[i].Surname</p>
             </li>
         }
 
