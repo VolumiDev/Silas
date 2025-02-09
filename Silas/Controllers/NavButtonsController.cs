@@ -9,10 +9,12 @@ namespace Silas.Controllers
     {
 
         private readonly StudentService _studentService;
+        private readonly OfferService _offerService;
 
-        public NavButtonsController(StudentService studentService)
+        public NavButtonsController(StudentService studentService, OfferService offerService)
         {
             _studentService = studentService;
+            _offerService = offerService;
         }
 
         [HttpGet]
@@ -35,6 +37,21 @@ namespace Silas.Controllers
 
                 case "Soporte":
                     return PartialView("StudentSupport");
+
+                //DETALLES DE LA OFERTA "X" SELECCIONADA EN "LeftPanel"
+                case "OfertaDetalle":
+                    
+                    var offer = await _offerService.GetOfferDetailsAsync(id);
+                    if (offer == null)
+                    {
+                        return PartialView("ErrorPartial", "Oferta no encontrada");
+                    }
+                    var offerModel = new OfferDetailsViewModel { OfferData = offer };
+                    //NO FUNCIONA CON SOLAMENTE "OfferDetails", TENGO Q PONER LA RUTA
+                    return PartialView("~/Views/Offers/OfferDetails.cshtml", offerModel);
+
+
+
 
                 default:
                     return PartialView("StudentApplies");
