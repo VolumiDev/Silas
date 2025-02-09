@@ -24,25 +24,36 @@ namespace Silas.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string userRole, int userId)
         {
-        
-            if (userRole=="company")
+            if (userRole == "admin")
             {
-                List<Offer> offers = await _offerService.GetOffersByCompanyIdAsync(userId);
+                //ADMIN, de momento las ultimas 10 ofertas (sin importar la rama de estudios)
+                List<Offer> offers = await _offerService.GetLatestOffersForAdminAsync();
                 var model = new LeftPanelViewModel
                 {
                     userRole = userRole,
                     datalist = offers
                 };
-
                 return View("LeftPanel", model);
             }
-            else if (userRole== "student")
+            else if (userRole == "student")
             {
-                List<Offer> last5Offers= await _offerService.GetCustomOffersForThisStudentAsync(userId);
+                //ALUMNO 5 últimas ofertas filtradas para su rama de estudios
+                List<Offer> last5Offers = await _offerService.GetCustomOffersForThisStudentAsync(userId);
                 var model = new LeftPanelViewModel
                 {
                     userRole = userRole,
                     datalist = last5Offers
+                };
+                return View("LeftPanel", model);
+            }
+            else if (userRole == "company")
+            {
+                //EMPRESA: SUS PROPIAS OFERTAS
+                List<Offer> offers = await _offerService.GetOffersByCompanyIdAsync(userId);
+                var model = new LeftPanelViewModel
+                {
+                    userRole = userRole,
+                    datalist = offers
                 };
                 return View("LeftPanel", model);
             }
@@ -51,12 +62,10 @@ namespace Silas.ViewComponents
                 var model = new LeftPanelViewModel
                 {
                     userRole = userRole,
-                    datalist = []
+                    datalist = new List<Offer>()
                 };
-                //ESTE ES EL ADMIN, HAY QUE RETORNAR UNA VISTA EN TODOS
                 return View("LeftPanel", model);
             }
-        
         }
     }
 }

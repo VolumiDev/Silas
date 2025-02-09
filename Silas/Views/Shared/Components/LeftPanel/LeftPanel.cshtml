@@ -1,43 +1,47 @@
+@model Silas.ViewModels.LeftPanelViewModel
 
-@model Silas.ViewModels.LeftPanelViewModel // "Admin" / "Alumno" / "Empresa"
-
-@if (Model.userRole == "admin")
-{
-    <h4>Últimos 10 apliques</h4>
-    <ul>
-        <li>Aplique 1</li>
-        <li>Aplique 2</li>
-        <!-- EJEMPLO -->
-        <li>Aplique 10</li>
-    </ul>
-}
-else if (Model.userRole == "student")
-{
-    <h4>5 últimas nuevas ofertas que han aparecido</h4>
-    <ul>
-        @foreach(var item in Model.datalist)
-        {
-            <li asp-controller="Offers">
-                <!-- UNSTYLED LINK ES PARA Q NO PAREZCA UN VÍNCULO NI ESTÉ DE AZUL NI SUBRAYADO -->
-                <a asp-controller="Offers" asp-action="Details" asp-route-id="@item.id" class="unstyled-link">
-                    <p>@item.title - @item.date.ToString("dd/MM/yyyy")</p>
-                </a>
-            </li>
-        }
-    </ul>
-}
-else if (Model.userRole == "company")
-{
-    <h4>Todas mis ofertas activas</h4>
-
-    <ul class="list-group">
-        @for (int i = 0; i < Model.datalist.Count; i++)
-        {
-            <li class="list-group-item">
-                <p><b>@Model.datalist[i].title:</b></p>
-                <p>@Model.datalist[i].date.ToString("dd/MM/yyyy")</p>
+<div class="left-panel-container">
+    @if (Model.userRole == "admin")
+    {
+        <h4>Últimas 10 ofertas publicadas</h4>
+        <ul class="left-panel-list">
+            @foreach (var item in Model.datalist)
+            {
+                <li>
+                    <a href="#" class="menu_item" data-title="OfertaDetalle" data-id="@item.id">
+                        <p>@item.title - @item.date.ToString("dd/MM/yyyy")</p>
+                    </a>
                 </li>
-        }
-    </ul>
-}
-
+            }
+        </ul>
+    }
+    else if (Model.userRole == "student")
+    {
+        <h4>5 últimas nuevas ofertas que han aparecido</h4>
+        <ul class="left-panel-list">
+            @foreach (var item in Model.datalist)
+            {
+                <li>
+                    <a href="#" class="menu_item" data-title="OfertaDetalle" data-id="@item.id">
+                        <p>@item.title - @item.date.ToString("dd/MM/yyyy")</p>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+    else if (Model.userRole == "company")
+    {
+        <h4>Todas mis ofertas activas</h4>
+        <ul class="left-panel-list">
+            @foreach (var offer in Model.datalist)
+            {
+                <li>
+                    <a href="#" class="menu_item" data-title="OfertaDetalle" data-id="@offer.id">
+                        <p><b>@offer.title</b></p>
+                        <p>@offer.date.ToString("dd/MM/yyyy")</p>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>

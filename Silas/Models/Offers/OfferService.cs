@@ -60,6 +60,47 @@ namespace Silas.Models.Offers
             }
         }
 
+        //PARA ADMIN
+        public async Task<List<Offer>> GetLatestOffersForAdminAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/list10LatestOffers.php");
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var offers = JsonSerializer.Deserialize<List<Offer>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return offers ?? new List<Offer>();
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return new List<Offer>();
+            }
+        }
+        //DETALLES DE UNA OFERTA EN CONCRETO, LA VISTA -> OfferDetails.cshtml
+        public async Task<Offer> GetOfferDetailsAsync(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getOfferDetails.php?id={id}");
+                response.EnsureSuccessStatusCode();
+
+
+                var json = await response.Content.ReadAsStringAsync();
+                var offer = JsonSerializer.Deserialize<Offer>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return offer;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+
+
+
     }
 
 }
