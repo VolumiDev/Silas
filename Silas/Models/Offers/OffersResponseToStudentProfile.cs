@@ -11,6 +11,6 @@ namespace Silas.Models.Offers
         public string Message { get; set; }
 
         [JsonPropertyName("offers")]
-        public List<OffersResponseToStudentProfile> Offers { get; set; }
+        public List<OffersToStudentProfile> Offers { get; set; }
     }
 }
