@@ -1,4 +1,4 @@
-﻿@model (string role, string userName)
+﻿@model (string role, string userName, int id)
 
 <!-- ESTRUCTURA PARA HEADER: IZQ (LOGO+BOTONES) / DCH (PERFIL) -->
 <div id="generic_header">
@@ -11,25 +11,25 @@
 
         <!-- BOTONES DE NAVEGACIÓN -->
         <div class="header-nav">
-            @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Inicio")
+            @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Inicio", Model.id))
 
             @if (Model.role == "admin")
             {
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Ver Empresas")
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Alumnos")
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Inscribir empresa")
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Ver Empresas", Model.id))
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Alumnos", Model.id))
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Inscribir empresa", Model.id))
                 
             }
             else if (Model.role == "company")
             {
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Mis ofertas")
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Soporte")
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Mis ofertas", Model.id))
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Soporte", Model.id))
             }
             else
             {
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Ofertas")
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Mis apliques")
-                @Html.Partial("HeaderButtons/_HeaderButtonPartial", "Soporte")
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Ofertas", Model.id))
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Mis apliques", Model.id))
+                @Html.Partial("HeaderButtons/_HeaderButtonPartial", ("", "Soporte", Model.id))
 
             }
         </div>

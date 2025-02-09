@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Silas.Models.Offers;
 using Silas.Models.Student;
+using Silas.ViewModels;
 
 namespace Silas.Controllers
 {
@@ -14,12 +16,19 @@ namespace Silas.Controllers
         }
 
         [HttpGet]
-        public IActionResult OnClick(string title)
+        public async Task<IActionResult> OnClick(string vacio, string title, int id)
         {
             switch (title)
             {
                 case "Ofertas":
-                    return PartialView("StudentOffers");
+
+                    var response =await _studentService.GetOffersToStodent(id);
+                    var model = new OffersToStudentProfileViewModel
+                    {
+                        OffersList = response.Offers
+                    };
+
+                    return PartialView("StudentOffers", model);
 
                 case "Inicio":
                     return PartialView("StudentHome");
