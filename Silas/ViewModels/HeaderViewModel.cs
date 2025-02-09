@@ -2,8 +2,8 @@
 {
     public class HeaderViewModel
     {
-        public string Category { get; set; }
-        public string Name { get; set; }
-        public int Id { get; set; }
+        public string userRole { get; set; }
+        public string userName { get; set; }
+        public int userId { get; set; }
     }
 }

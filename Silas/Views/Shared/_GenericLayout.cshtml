@@ -26,7 +26,7 @@
     <div id="generic_body">
 
         <!-- HEADER -->
-        @Html.Partial("_HeaderPartial", (Model.category, Model.name))
+        @await Component.InvokeAsync("Header", new{ userRole = Model.category, userName = Model.name, userId = Model.id})
 
         <!-- CONTENEDOR (MAIN,LATDER,LATIZQ) -->
         <div id="generic_central_panel">
@@ -67,8 +67,9 @@
         $('.menu_item').click(function(e){
             e.preventDefault(); // Evita la navegación completa
             var title = $(this).data('title'); // Captura el título deseado
+            var id = $(this).data('id');
             // Llamada AJAX al controlador enviando el parámetro "title"
-            $.get('/NavButtons/OnClick', { title: title }, function(data){
+            $.get('/NavButtons/OnClick', { title: title, id: id }, function(data){
                 $('#central_panel').html(data);
             });
         });

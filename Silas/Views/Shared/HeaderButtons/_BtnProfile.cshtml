@@ -1,4 +1,4 @@
-﻿@model (string role, string userName)
+﻿@model Silas.ViewModels.HeaderViewModel
 
 <!-- BOTON PERFIL CON DROPDOWN -->
 <div class="header-button profile-container">
@@ -12,7 +12,7 @@
     <!-- MENÚ -->
     <div class="profile-dropdown">
         <ul>
-            <li>Perfil (@Model.role)</li>
+            <li>Perfil (@Model.userRole)</li>
             <li>Configuración</li>
             <li>Logout</li>
         </ul>
