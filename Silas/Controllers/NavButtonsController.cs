@@ -42,10 +42,7 @@ namespace Silas.Controllers
                 case "OfertaDetalle":
                     
                     var offer = await _offerService.GetOfferDetailsAsync(id);
-                    if (offer == null)
-                    {
-                        return PartialView("ErrorPartial", "Oferta no encontrada");
-                    }
+
                     var offerModel = new OfferDetailsViewModel { OfferData = offer };
                     //NO FUNCIONA CON SOLAMENTE "OfferDetails", TENGO Q PONER LA RUTA
                     return PartialView("~/Views/Offers/OfferDetails.cshtml", offerModel);

@@ -1,5 +1,6 @@
 ﻿using Silas.Models.Applies;
 using Silas.Models.Offers;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace Silas.Models.Student
@@ -61,6 +62,14 @@ namespace Silas.Models.Student
             {
                 return null;
             }
+        }
+        public async Task<Student> GetStudentByIdAsync(int id)
+        {
+            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentDetails.php?id_student={id}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return student;
         }
 
     }
