@@ -15,9 +15,8 @@ namespace Silas.Controllers
         private readonly OfferService _offerService;
         private readonly CompanyService _companyService;
 
-        public NavButtonsController(StudentService studentService, OfferService offerService, CompanyService companyService)
         private readonly CourseService _courseService;
-        public NavButtonsController(StudentService studentService, OfferService offerService, CourseService courseService)
+        public NavButtonsController(StudentService studentService, OfferService offerService, CourseService courseService, CompanyService companyService)
         {
             _studentService = studentService;
             _offerService = offerService;
@@ -148,9 +147,9 @@ namespace Silas.Controllers
 
                 //MOSTRAR OFERTAS DE UNA EMPRESA
                 case "Mis ofertas":
-                    var offers=await _offerService.GetOffersByCompanyIdAsync(id);
+                    var offerJuan=await _offerService.GetOffersByCompanyIdAsync(superID);
 
-                    return PartialView("CompanyOffers",offers);
+                    return PartialView("CompanyOffers",offerJuan);
 
                 case "NewOfferForm":
 
@@ -163,8 +162,8 @@ namespace Silas.Controllers
 
                     var newoffermodel = new NewOfferViewModel
                     {
-                        Title = title,
-                        IdCompany = id,
+                        Title = actionName,
+                        IdCompany = superID,
                         Offer= new OfferInsert(),
                         Courses = cursos
                     };
