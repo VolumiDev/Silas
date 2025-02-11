@@ -72,5 +72,24 @@ namespace Silas.Models.Student
             return student;
         }
 
+        public async Task<List<Student>> GetAllStudentsAsync()
+        {
+            try
+            {
+                //LISTSTUDENTS ES UN PHP QUE TODAVIA NO EXISTE
+                var response = await _HttpClient.GetAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/listStudents.php");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var students = JsonSerializer.Deserialize<List<Student>>(json);
+                return students ?? new List<Student>();
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en GetAllStudentsAsync: {ex.Message}");
+                return new List<Student>();
+            }
+        }
+
     }
 }

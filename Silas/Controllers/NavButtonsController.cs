@@ -40,7 +40,34 @@ namespace Silas.Controllers
                     return PartialView("StudentOffers", model);
 
                 case "Inicio":
-                    return PartialView("StudentHome");
+                    {
+                        var companies2 = await _companyService.ListAllCompaniesAsync();
+                        int companiesCount = companies2?.Count ?? 0;
+
+                        var offersList = await _offerService.GetLatestOffersForAdminAsync(); 
+                        int offersCount = offersList?.Count ?? 0;
+
+                        //STUDENTS NO ESTÁ FUNCIONANDO FALTA EL PHP
+                        var students = await _studentService.GetAllStudentsAsync();
+                        int studentsCount = students?.Count ?? 0;
+
+                        int applicationsCount = 0;
+                        foreach (var offer2 in offersList)
+                        {
+                            var apps = await _offerService.GetOfferApplicationsAsync(offer2.id);
+                            applicationsCount += apps.Count;
+                        }
+
+                        var dashboardModel = new DashboardViewModel
+                        {
+                            CompaniesCount = companiesCount,
+                            OffersCount = offersCount,
+                            StudentsCount = studentsCount, //NO ESTÁ FUNCIONANDO, FALTA EL PHP
+                            ApplicationsCount = applicationsCount
+                        };
+
+                        return PartialView("Dashboard", dashboardModel);
+                    }
 
                 case "Soporte":
                     return PartialView("StudentSupport");

@@ -39,21 +39,17 @@
 <script>
     $(document).ready(function () {
         $("#saveOfferBtn").click(function () {
-            //1) Recogemos datos del formulario
+            // 1) Recogemos datos del formulario
             var formData = $("#editOfferForm").serialize();
 
-            //2)Realizamos la llamada AJAX a /Offers/EditOffer (POST)
-            //Ajusta la ruta si tu controlador se llama distinto o la acción
-            //no es "/Offers/EditOffer".
+            // 2) Realizamos la llamada AJAX a /Offers/EditOffer (POST)
             $.post('/Offers/EditOffer', formData)
                 .done(function (resp) {
-                    //Esperamos que el controlador retorne, por ejemplo, un JSON
-                    //con { success = true/false, companyId = x }
-
+                    // Se espera que el controlador retorne un JSON con { success: true, companyId: ... }
                     if (resp.success) {
-                        //3) Si respuesta OK, recargamos la vista de la empresa mediante una llamada AJAX a NavButtonsController => "EmpresaDetalle"
+                        // 3) Si la respuesta es OK, recargamos la vista de la empresa mediante NavButtons/OnClick
                         $.get('/NavButtons/OnClick',
-                            { title: 'EmpresaDetalle', id: resp.companyId },
+                            { actionName: 'EmpresaDetalle', superID: resp.companyId },
                             function (data) {
                                 $('#central_panel').html(data);
                             });
@@ -67,3 +63,4 @@
         });
     });
 </script>
+
