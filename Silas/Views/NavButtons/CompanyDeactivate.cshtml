@@ -1,0 +1,16 @@
+﻿@model Silas.Models.Company
+
+<div class="alert alert-success">
+    <!--ESTE MENSAJE ES MUY FALSO, PORQUE AUNQUE NO FUNCIONE EL SERVER APARECERÁ, PERO BUENO ES DE PRUEBA-->
+    La empresa <strong>@Model.Name</strong> ha sido inactivada correctamente.
+</div>
+<a class="btn btn-primary" href="#" onclick="loadCompanyList(); return false;">Volver al listado de empresas</a>
+
+<script>
+    function loadCompanyList() {
+        //AJAX a NavButtonsController CARGA EL LISTADO DE EMPRESAS DE NUEVO
+        $.get('/NavButtons/OnClick', { title: 'Ver Empresas', id: 0 }, function (data) {
+            $('#central_panel').html(data);
+        });
+    }
+</script>

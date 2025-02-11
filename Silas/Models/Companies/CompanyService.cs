@@ -43,7 +43,7 @@ namespace Silas.Models.Companies
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var company = JsonSerializer.Deserialize<Company>(json);
+                    var company = JsonSerializer.Deserialize<Company>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     return company;
                 }
                 else
@@ -51,11 +51,13 @@ namespace Silas.Models.Companies
                     return null;
                 }
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
         }
+
 
         //ACTUALIZA LOS DATOS DE LA COPAÑIA EN LA BBDD
         public async Task<bool> UpdateCompanyAsync(Company company)
@@ -101,22 +103,18 @@ namespace Silas.Models.Companies
             try
             {
                 var response = await _httpClient.GetAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/listCompanies.php");
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var companies = JsonSerializer.Deserialize<List<Company>>(json);
-                    return companies;
-                }
-                else
-                {
-                    return null;
-                }
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var companies = JsonSerializer.Deserialize<List<Company>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return companies ?? new List<Company>();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException ex)
             {
-                return null;
+                Console.WriteLine($"Error in ListAllCompaniesAsync: {ex.Message}");
+                return new List<Company>();
             }
         }
+
 
 
 
@@ -149,6 +147,7 @@ namespace Silas.Models.Companies
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 var companies = JsonSerializer.Deserialize<List<Company>>(json);
+                Console.WriteLine($"Companies: {companies}");
                 return companies ?? new List<Company>();
             }
             catch (HttpRequestException ex)

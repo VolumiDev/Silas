@@ -1,0 +1,67 @@
+﻿@model Silas.ViewModels.OfferFullDetailsViewModel
+
+<h2>Detalles de la Oferta: @Model.OfferData.title</h2>
+
+<div>
+    <p><strong>ID:</strong> @Model.OfferData.id</p>
+    <p><strong>Descripción:</strong> @Model.OfferData.description</p>
+    <p><strong>Requisitos:</strong> @Model.OfferData.requiriments</p>
+    <p><strong>Fecha:</strong> @Model.OfferData.date.ToString("dd/MM/yyyy")</p>
+    <p><strong>Ubicación:</strong> @Model.OfferData.location</p>
+    <p><strong>ID Empresa:</strong> @Model.OfferData.id_company</p>
+    <p><strong>ID Curso:</strong> @Model.OfferData.id_course</p>
+</div>
+
+<h3>Aplicaciones de Estudiantes</h3>
+@if (Model.Applications != null && Model.Applications.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>NIE</th>
+                <th>Género</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Teléfono</th>
+                <th>Presentación</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Applications.Count; i++)
+            {
+                var app = Model.Applications[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@app.StudentName</td>
+                    <td>@app.StudentSurname</td>
+                    <td>@app.StudentNie</td>
+                    <td>@app.StudentGender</td>
+                    <td>@app.StudentBirthdate.ToString("dd/MM/yyyy")</td>
+                    <td>@app.StudentPhone</td>
+                    <td>@app.ApplicationPresentation</td>
+                    <td>
+                        @switch (app.ApplicationStatus)
+                        {
+                            case 0:
+                                @:Rechazado
+                                break;
+                            case 1:
+                                @:Pendiente
+                                break;
+                            case 2:
+                                @:Aceptado
+                                break;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay aplicaciones para esta oferta.</p>
+}

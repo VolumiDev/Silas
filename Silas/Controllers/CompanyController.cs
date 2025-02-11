@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Silas.Models;
 using Silas.Models.Companies;
+using Silas.Models.Offers;
 using Silas.ViewModels;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Silas.Controllers
@@ -8,10 +11,12 @@ namespace Silas.Controllers
     public class CompanyController : Controller
     {
         private readonly CompanyService _companyService;
+        private readonly OfferService _offerService;
 
-        public CompanyController(CompanyService companyService)
+        public CompanyController(CompanyService companyService, OfferService offerService)
         {
             _companyService = companyService;
+            _offerService = offerService;
         }
 
         //LISTADO DE TODAS LAS EMPRESAS SIN EXCEPCIÓN
@@ -21,34 +26,26 @@ namespace Silas.Controllers
             return View(companies);
         }
 
-        //DETALLES DE LA EMPRESA "X" CON LISTADO DE OFFERTAS
-        public async Task<IActionResult> Details(int id)
-        {
-            var details = await _companyService.GetCompanyByIdAsync(id);
-            if (details == null)
-                return NotFound();
-            return View(details);
-        }
 
-        //VENIMOS DESDE LA VISTA "EDIT.CSHTML" Q PERMITE MODIFICAR TODOS LOS DATOS DE UNA EMPRESA, PODREMOS ACCEDER A ESA VISTA DESDE DOS LUGARES DISTINTOS
+        //GET Q MUESTRA EL FORMULARIO DE EDICIÓN DE "COMPANY"
         public async Task<IActionResult> Edit(int id)
         {
-            var details = await _companyService.GetCompanyByIdAsync(id);
-            if (details == null)
-                return NotFound();
-            return View(details);
+            var company = await _companyService.GetCompanyByIdAsync(id);
+            return View(company);
         }
 
+        //POST q recibe el modelo Company para actualizar
         [HttpPost]
-        public async Task<IActionResult> Edit(CompanyDetailsViewModel model)
+        public async Task<IActionResult> Edit(Company company)
         {
             if (ModelState.IsValid)
             {
-                var result = await _companyService.UpdateCompanyAsync(model.Company);
+                var result = await _companyService.UpdateCompanyAsync(company);
                 if (result)
-                    return RedirectToAction("Details", new { id = model.Company.IdUser });
+                    return RedirectToAction("OnClick", "NavButtons", new { title = "EmpresaDetalle", id = company.IdUser });
+
             }
-            return View(model);
+            return View(company);
         }
 
         //PASAR UNA EMPRESA SU "STATUS" A 0

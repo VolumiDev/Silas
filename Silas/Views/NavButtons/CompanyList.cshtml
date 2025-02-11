@@ -1,0 +1,32 @@
+﻿@model List<Silas.Models.Company>
+
+<h2>Listado de Empresas</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var company in Model)
+        {
+            <tr>
+                <td>@company.IdUser</td>
+                <td>@company.Name</td>
+                <td>@company.Telephone</td>
+                <td>
+                    <!-- TAMBIÉN REDIRIJO A menu_item -->
+                    <a class="btn btn-info btn-sm menu_item" data-title="EmpresaDetalle" data-id="@company.IdUser">Ver Empresa</a>
+                    |
+                    <!-- ESTO FALTA ADAPTARLO PORQUE PROBABLEMENTE TENGA QUE HACERLO TAMBIÉNN EN NAVB -->
+                    <a class="btn btn-primary btn-sm menu_item" data-title="EmpresaModificar" data-id="@company.IdUser">Modificar Empresa</a> |
+                    <a class="btn btn-warning btn-sm menu_item" data-title="EmpresaInactivar" data-id="@company.IdUser">Inactivar Empresa</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
