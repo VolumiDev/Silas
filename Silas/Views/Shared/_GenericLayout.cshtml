@@ -70,7 +70,7 @@
             var id = $(this).data('id');
             var cid = $(this).data('cid') || 0; //SI NO EXISTE 'cid' ENVIA 0 Y YA ESTÁ
             // En este caso, para "EmpresaDetalle" se usa AJAX y se carga en #central_panel
-            $.get('/NavButtons/OnClick', { title: title, id: id }, function (data) {
+            $.get('/NavButtons/OnClick', { actionName: title, superID: id }, function (data) {
                 $('#central_panel').html(data);
             });
         });

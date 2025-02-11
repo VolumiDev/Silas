@@ -31,7 +31,7 @@ namespace Silas.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var company = await _companyService.GetCompanyByIdAsync(id);
-            return View(company);
+            return PartialView("~/Views/NavButtons/CompanyEdit.cshtml", company);
         }
 
         //POST q recibe el modelo Company para actualizar
@@ -40,13 +40,15 @@ namespace Silas.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _companyService.UpdateCompanyAsync(company);
+                bool result = await _companyService.UpdateCompanyAsync(company);
                 if (result)
+                {
                     return RedirectToAction("OnClick", "NavButtons", new { title = "EmpresaDetalle", id = company.IdUser });
-
+                }
             }
-            return View(company);
+            return View("~/Views/NavButtons/CompanyEdit.cshtml", company);
         }
+
 
         //PASAR UNA EMPRESA SU "STATUS" A 0
         [HttpPost]

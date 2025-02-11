@@ -22,13 +22,13 @@ namespace Silas.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OnClick(string vacio, string title, int id, int cid=0)
+        public async Task<IActionResult> OnClick(string vacio, string actionName, int superID, int cid=0)
         {
-            switch (title)
+            switch (actionName)
             {
                 case "Ofertas":
 
-                    var response =await _studentService.GetOffersToStodent(id);
+                    var response =await _studentService.GetOffersToStodent(superID);
                     var model = new OffersToStudentProfileViewModel
                     {
                         OffersList = response.Offers
@@ -46,7 +46,7 @@ namespace Silas.Controllers
                 //DETALLES DE LA OFERTA "X" SELECCIONADA EN "LeftPanel"
                 case "OfertaDetalle":
                     
-                    var offer = await _offerService.GetOfferDetailsAsync(id);
+                    var offer = await _offerService.GetOfferDetailsAsync(superID);
 
                     var offerModel = new OfferDetailsViewModel { OfferData = offer };
                     //NO FUNCIONA CON SOLAMENTE "OfferDetails", TENGO Q PONER LA RUTA
@@ -55,11 +55,11 @@ namespace Silas.Controllers
                 case "OfertaFullDetalle":
                     {
                         // Muestra detalles completos: oferta + aplicaciones
-                        var fullOffer = await _offerService.GetOfferDetailsAsync(id);
+                        var fullOffer = await _offerService.GetOfferDetailsAsync(superID);
                         var fullOfferModel = new OfferFullDetailsViewModel
                         {
                             OfferData = fullOffer,
-                            Applications = await _offerService.GetOfferApplicationsAsync(id)
+                            Applications = await _offerService.GetOfferApplicationsAsync(superID)
                         };
                         return PartialView("~/Views/NavButtons/OfferFullDetails.cshtml", fullOfferModel);
 
@@ -68,7 +68,7 @@ namespace Silas.Controllers
                 case "OfertaModificar":
                     {
                         // Carga el formulario de edición de la oferta.
-                        var offerToEdit = await _offerService.GetOfferDetailsAsync(id);
+                        var offerToEdit = await _offerService.GetOfferDetailsAsync(superID);
                         if (offerToEdit == null)
                             return NotFound();
                         return PartialView("EditOffer", offerToEdit);
@@ -77,9 +77,9 @@ namespace Silas.Controllers
                 //ELIMINAR OFERTA
                 case "OfertaEliminar":
                     {
-                        var offerToShow = await _offerService.GetOfferDetailsAsync(id);
+                        var offerToShow = await _offerService.GetOfferDetailsAsync(superID);
 
-                        bool deleteResult = await _offerService.DeleteOfferAsync(id);
+                        bool deleteResult = await _offerService.DeleteOfferAsync(superID);
                         if (deleteResult)
                         {
                             if (offerToShow == null)
@@ -109,8 +109,8 @@ namespace Silas.Controllers
 
                     //DETALLE DE UNA EMPRESA CONCRETA Y SUS OFERTAS
                 case "EmpresaDetalle":
-                    var company = await _companyService.GetCompanyByIdAsync(id);
-                    var offers = await _offerService.GetOffersByCompanyIdAsync(id);
+                    var company = await _companyService.GetCompanyByIdAsync(superID);
+                    var offers = await _offerService.GetOffersByCompanyIdAsync(superID);
                     var companyDetailsModel = new CompanyDetailsViewModel
                     {
                         Company = company,
@@ -120,19 +120,19 @@ namespace Silas.Controllers
 
                     //MODIFICAR EMPRESA
                 case "EmpresaModificar":
-                    var companyToEdit = await _companyService.GetCompanyByIdAsync(id);
+                    var companyToEdit = await _companyService.GetCompanyByIdAsync(superID);
                     if (companyToEdit == null)
                         return NotFound();
                     return PartialView("CompanyEdit", companyToEdit);
 
                 //DESACTIVAR EMPRESA
                 case "EmpresaInactivar":
-                        company = await _companyService.GetCompanyByIdAsync(id);
+                        company = await _companyService.GetCompanyByIdAsync(superID);
                     if (company == null)
                     {
                         return NotFound();
                     }
-                    var result = await _companyService.DeactivateCompanyAsync(id);
+                    var result = await _companyService.DeactivateCompanyAsync(superID);
                     if (result)
                     {
                         return PartialView("CompanyDeactivate", company);
