@@ -33,6 +33,23 @@ namespace Silas.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> CreateOffer([FromBody] OfferInsert offer) {
+
+
+            var response = await _offerService.CreateOfferAsync(offer);
+            if (response)
+            {
+                return Json(new { success = true, message = "Inserción exitosa" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error en la inserción" });
+            }
+
+
+        }
+
 
 
     }
