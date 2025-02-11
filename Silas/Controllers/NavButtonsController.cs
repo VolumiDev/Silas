@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Silas.Models.Courses;
 using Silas.Models.Offers;
 using Silas.Models.Student;
 using Silas.ViewModels;
@@ -10,11 +11,12 @@ namespace Silas.Controllers
 
         private readonly StudentService _studentService;
         private readonly OfferService _offerService;
-
-        public NavButtonsController(StudentService studentService, OfferService offerService)
+        private readonly CourseService _courseService;
+        public NavButtonsController(StudentService studentService, OfferService offerService, CourseService courseService)
         {
             _studentService = studentService;
             _offerService = offerService;
+            _courseService = courseService;
         }
 
         [HttpGet]
@@ -50,8 +52,29 @@ namespace Silas.Controllers
                     //NO FUNCIONA CON SOLAMENTE "OfferDetails", TENGO Q PONER LA RUTA
                     return PartialView("~/Views/Offers/OfferDetails.cshtml", offerModel);
 
+                //MOSTRAR OFERTAS DE UNA EMPRESA
+                case "Mis ofertas":
+                    var offers=await _offerService.GetOffersByCompanyIdAsync(id);
 
+                    return PartialView("CompanyOffers",offers);
 
+                case "NewOfferForm":
+
+                    var cursos = await _courseService.GetCoursesAsync();
+
+                    if (cursos == null)
+                    {
+                        cursos = new List<Course>();
+                    }
+
+                    var newoffermodel = new NewOfferViewModel
+                    {
+                        Title = title,
+                        IdCompany = id,
+                        Offer= new OfferInsert(),
+                        Courses = cursos
+                    };
+                    return PartialView("NewOfferForm",newoffermodel);
 
                 default:
                     return PartialView("StudentApplies");

@@ -98,7 +98,24 @@ namespace Silas.Models.Offers
             }
         }
 
+        public async Task<bool> CreateOfferAsync(OfferInsert offer)
 
+
+        {
+            var json = JsonSerializer.Serialize(offer);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            try
+            {
+                var response = await _httpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/createNewOffer.php", content);
+                response.EnsureSuccessStatusCode();
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
 
 
     }

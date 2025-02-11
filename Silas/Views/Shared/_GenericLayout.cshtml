@@ -63,8 +63,10 @@
 
     <!-- Aquí se incluye jQuery antes de cerrar el body -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+
     <script>
-    $(document).ready(function(){
+   /* $(document).ready(function(){
         $('.menu_item').click(function(e){
             e.preventDefault(); // Evita la navegación completa
             var title = $(this).data('title'); // Captura el título deseado
@@ -74,7 +76,28 @@
                 $('#central_panel').html(data);
             });
         });
-    });
+    });*/
+
+            $(document).ready(function () {
+            $(document).on('click', '.menu_item', function (e) {
+                e.preventDefault(); // Prevent full page reload
+
+                var title = $(this).data('title'); // Get title from data attribute
+                var id = $(this).data('id');
+
+                // Debugging: Log to check which title is being sent
+                console.log("Clicked on:", title, "ID:", id);
+
+                // AJAX call to controller with parameters
+                $.get('/NavButtons/OnClick', { title: title, id: id }, function (data) {
+                    $('#central_panel').html(data);
+                });
+            });
+        });
+
+			
+
 </script>
+    
 </body>
 </html>

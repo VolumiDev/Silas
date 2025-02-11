@@ -1,0 +1,107 @@
+﻿@model Silas.ViewModels.NewOfferViewModel
+
+
+<style>
+    #newofferform {
+        width: 70%;
+        height: auto;
+        padding: 20px;
+        border-radius: 10px;
+        margin: auto;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        background: white;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #218838;
+        }
+</style>
+
+
+
+<form id="newofferform">
+
+    <label for="title">Título</label> 
+    <input type="text" asp-for="@Model.Offer.title" required />
+
+    <label for="description">Descripción</label>
+    <textarea asp-for="@Model.Offer.description" rows="3" required></textarea>
+
+    <label for="id_course">Curso</label>
+    <select asp-for="@Model.Offer.id_course" asp-items="@(new SelectList(Model.Courses,"Id","Name","Acronim"))" required>
+		<option value="">Selecciona un curso</option>
+        
+    </select>
+
+    <label for="date">Fecha</label>
+    <input type="date" asp-for="@Model.Offer.date" required />
+
+    <label for="location">Ubicación</label>
+    <input type="text" asp-for="@Model.Offer.location" required />
+
+    <!-- Hidden input to store id_company -->
+    <input type="hidden" asp-for="@Model.Offer.id_company" value="@Model.IdCompany"/>
+
+ 
+
+    <button type="submit">Crear Oferta</button>
+    <p id="responseMessage" style="color: green; display: none;"></p>
+
+</form>
+
+
+<a class="btn btn-dark menu_item" data-title="Mis ofertas" data-id="@Model.IdCompany">REGRESAR</a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#newofferform").submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var formData = {
+                title: $("#newofferform input[name='Offer.title']").val(),
+                description: $("#newofferform textarea[name='Offer.description']").val(),
+                id_course: $("#newofferform select[name='Offer.id_course']").val(),
+                date: $("#newofferform input[name='Offer.date']").val(),
+                location: $("#newofferform input[name='Offer.location']").val(),
+                id_company: $("#newofferform input[name='Offer.id_company']").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Offers/CreateOffer", // Controller endpoint
+                data: JSON.stringify(formData),
+                contentType: "application/json",
+                success: function (response) {
+                    $("#responseMessage").text("Inserción exitosa").css("color", "green").show();
+                    $("#newofferform")[0].reset(); // Reset form after success
+                },
+                error: function () {
+                    $("#responseMessage").text("Error en la inserción").css("color", "red").show();
+                }
+            });
+        });
+    });
+</script>
