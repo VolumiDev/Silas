@@ -1,0 +1,41 @@
+﻿@model Silas.ViewModels.CompanyDetailsViewModel
+
+<h2>Detalles de la Empresa: @Model.Company.Name</h2>
+<div>
+    <p><strong>Dirección:</strong> @Model.Company.Adress</p>
+    <p><strong>Teléfono:</strong> @Model.Company.Telephone</p>
+    <p><strong>Contacto:</strong> @Model.Company.Contact</p>
+    <p><strong>Móvil:</strong> @Model.Company.Mobile</p>
+</div>
+
+<h3>Ofertas de la Empresa</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Oferta</th>
+            <th>Título</th>
+            <th>Fecha</th>
+            <th>Requisitos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var offer in Model.Offers)
+        {
+            <tr>
+                <td>@offer.id</td>
+                <td>@offer.title</td>
+                <td>@offer.date.ToString("dd/MM/yyyy")</td>
+                <td>@offer.requiriments</td>
+                <td>
+                <td>
+                    <a class="btn btn-info btn-sm menu_item" data-title="OfertaFullDetalle" data-id="@offer.id">Ver oferta</a> |
+                    <a class="btn btn-primary btn-sm menu_item" data-title="OfertaModificar" data-id="@offer.id">Modificar oferta</a> |
+                    <a class="btn btn-danger btn-sm menu_item" data-title="OfertaEliminar" data-id="@offer.id" data-cid="@Model.Company.IdUser">Eliminar oferta</a>
+                </td>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

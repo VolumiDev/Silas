@@ -1,0 +1,69 @@
+﻿@model Silas.Models.Offers.Offer
+
+<h2>Modificar oferta</h2>
+
+<!-- No definimos asp-controller ni asp-action,
+     porque haremos la llamada vía AJAX a /Offers/EditOffer. -->
+<form id="editOfferForm">
+    <input type="hidden" asp-for="id" />
+
+    <div class="form-group">
+        <label asp-for="title"></label>
+        <input asp-for="title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="description"></label>
+        <textarea asp-for="description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="id_course"></label>
+        <input asp-for="id_course" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="date"></label>
+        <input asp-for="date" class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label asp-for="location"></label>
+        <input asp-for="location" class="form-control" />
+    </div>
+
+    <!-- id_company es necesario para volver a CompanyDetails tras guardar -->
+    <input type="hidden" asp-for="id_company" />
+
+    <button type="button" class="btn btn-primary" id="saveOfferBtn">
+        Guardar cambios
+    </button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#saveOfferBtn").click(function () {
+            //1) Recogemos datos del formulario
+            var formData = $("#editOfferForm").serialize();
+
+            //2)Realizamos la llamada AJAX a /Offers/EditOffer (POST)
+            //Ajusta la ruta si tu controlador se llama distinto o la acción
+            //no es "/Offers/EditOffer".
+            $.post('/Offers/EditOffer', formData)
+                .done(function (resp) {
+                    //Esperamos que el controlador retorne, por ejemplo, un JSON
+                    //con { success = true/false, companyId = x }
+
+                    if (resp.success) {
+                        //3) Si respuesta OK, recargamos la vista de la empresa mediante una llamada AJAX a NavButtonsController => "EmpresaDetalle"
+                        $.get('/NavButtons/OnClick',
+                            { title: 'EmpresaDetalle', id: resp.companyId },
+                            function (data) {
+                                $('#central_panel').html(data);
+                            });
+                    } else {
+                        alert("Error al actualizar oferta: " + resp.error);
+                    }
+                })
+                .fail(function (err) {
+                    alert("Error en la petición AJAX al guardar la oferta");
+                });
+        });
+    });
+</script>

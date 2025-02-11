@@ -1,0 +1,16 @@
+﻿@model Silas.Models.Offers.Offer
+
+<div class="alert alert-danger">
+    <p><strong>Error al eliminar la oferta:</strong> @Model.title</p>
+    <p>Puede que existan dependencias o la oferta ya no exista.</p>
+</div>
+
+<a class="btn btn-primary" href="#" onclick="backToCompanyDetails(); return false;">Volver a la empresa</a>
+
+<script>
+    function backToCompanyDetails() {
+        $.get('/NavButtons/OnClick', { title: 'EmpresaDetalle', id: '@Model.id_company' }, function (data) {
+            $('#central_panel').html(data);
+        });
+    }
+</script>

@@ -1,0 +1,47 @@
+﻿@model Silas.Models.Company
+
+<h2>Modificar Empresa</h2>
+<form id="companyEditForm">
+    <input type="hidden" asp-for="IdUser" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Adress"></label>
+        <input asp-for="Adress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Telephone"></label>
+        <input asp-for="Telephone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Contact"></label>
+        <input asp-for="Contact" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Mobile"></label>
+        <input asp-for="Mobile" class="form-control" />
+    </div>
+    <button type="button" id="saveCompanyBtn" class="btn btn-primary">Guardar cambios</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#saveCompanyBtn").click(function () {
+            var formData = $("#companyEditForm").serialize();
+            // Enviamos el formulario vía AJAX a la acción POST de Company/Edit.
+            $.post('/Company/Edit', formData)
+                .done(function (response) {
+                    // Tras guardar, redirige (vía AJAX) a "EmpresaDetalle"
+                    var companyId = $('input[name="IdUser"]').val();
+                    $.get('/NavButtons/OnClick', { title: 'EmpresaDetalle', id: companyId }, function (data) {
+                        $('#central_panel').html(data);
+                    });
+                })
+                .fail(function (xhr) {
+                    alert("Error al guardar cambios");
+                });
+        });
+    });
+</script>

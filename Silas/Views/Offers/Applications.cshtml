@@ -1,0 +1,32 @@
+﻿@model List<Silas.ViewModels.OfferApplicationViewModel>
+
+<h2>Aplicaciones para la Oferta</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Alumno</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>NIE</th>
+            <th>Presentación</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>@app.StudentId</td>
+                <td>@app.StudentName</td>
+                <td>@app.StudentSurname</td>
+                <td>@app.StudentNie</td>
+                <td>@app.ApplicationPresentation</td>
+                <td>@app.ApplicationStatus</td>
+                <td>
+                    <a asp-controller="Student" asp-action="Details" asp-route-id="@app.StudentId" class="btn btn-info btn-sm">Ver Detalles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

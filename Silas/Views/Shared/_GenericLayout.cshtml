@@ -66,37 +66,16 @@
    
 
     <script>
-   /* $(document).ready(function(){
-        $('.menu_item').click(function(e){
+        $(document).on('click', '.menu_item', function (e) {
             e.preventDefault(); // Evita la navegación completa
-            var title = $(this).data('title'); // Captura el título deseado
+            var title = $(this).data('title');
             var id = $(this).data('id');
-            // Llamada AJAX al controlador enviando el parámetro "title"
-            $.get('/NavButtons/OnClick', { title: title, id: id }, function(data){
+            var cid = $(this).data('cid') || 0; //SI NO EXISTE 'cid' ENVIA 0 Y YA ESTÁ
+            // En este caso, para "EmpresaDetalle" se usa AJAX y se carga en #central_panel
+            $.get('/NavButtons/OnClick', { actionName: title, superID: id }, function (data) {
                 $('#central_panel').html(data);
             });
         });
-    });*/
-
-            $(document).ready(function () {
-            $(document).on('click', '.menu_item', function (e) {
-                e.preventDefault(); // Prevent full page reload
-
-                var title = $(this).data('title'); // Get title from data attribute
-                var id = $(this).data('id');
-
-                // Debugging: Log to check which title is being sent
-                console.log("Clicked on:", title, "ID:", id);
-
-                // AJAX call to controller with parameters
-                $.get('/NavButtons/OnClick', { title: title, id: id }, function (data) {
-                    $('#central_panel').html(data);
-                });
-            });
-        });
-
-			
-
 </script>
     
 </body>

@@ -9,6 +9,7 @@
         public DateTime date { get; set; }
         public string location { get; set; }
         public int id_company { get; set; }
+        public int id_course { get; set; } //LO NECESITAMOS PARA EDITAR
 
         //CURSO Y ACRONIMO PARA LA VISTA DE OFERTA EN DETALLE
         public string course_name { get; set; }
