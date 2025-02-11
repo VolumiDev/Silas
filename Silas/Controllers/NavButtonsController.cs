@@ -32,6 +32,9 @@ namespace Silas.Controllers
                 case "Ofertas":
 
                     var response =await _studentService.GetOffersToStodent(superID);
+
+                    var apliesResponse = await _studentService.ListAplliesByStudentId(superID);
+
                     var model = new OffersToStudentProfileViewModel
                     {
                         OffersList = response.Offers

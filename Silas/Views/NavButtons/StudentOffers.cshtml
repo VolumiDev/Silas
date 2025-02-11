@@ -10,6 +10,7 @@
             <th scope="col">Localización</th>
             <th scope="col">Empresa</th>
             <th scope="col">Fecha Oferta</th>
+            <th scope="col">Acciones</th>
         </tr
     </thead>
     <tbody>
@@ -22,6 +23,11 @@
                 <th> @Model.OffersList[i].OffersLocation</th>
                 <th> @Model.OffersList[i].CompaniesName</th>
                 <th> @Model.OffersList[i].OffersDate.ToString("dd/MM/yyyy")</th>
+                <th class="text-center">
+                    @if(Model.OffersList[i].Stude)
+                    <a href="#"><i class="bi bi-bookmark-plus" style="font-size: 2rem;"></i></a>
+
+                </th>
             </tr>
         }
     </tbody>
