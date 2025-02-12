@@ -228,8 +228,44 @@ namespace Silas.Models.Companies
                 return null;
             }
         }
+        //METODO PARA RECOGER LOS DATOS EN EL PERFIL DE LA COMPAÑIA, CASI REITERATIVO CON EL DE GETCOMPANYBYID PERO PARA EVITAR ERRORES POR DIFERENCIAS DE VARIABLE EN LOS PHP
+        //PREVIO A LA ENTREGA HAGO UN METODO A PARTE
+        public async Task<Company> GetCompanyProfileByIdAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getCompanyByUserID.php?id_user={id}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("JSON recibido: " + json);
+            var company = JsonSerializer.Deserialize<Company>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return company;
+        }
+        //LO MISMO QUE EL DE ARRIBA, PERO ESTE POR EJEMPLO NO EDITA STATUS Y COSAS ASI YA QUE EL CONTROLADOR INICIAL DE EDICION SE CREO PARA EL ADMIN. REVISAR
+        // POST-PRESENTACION
+        public async Task<bool> UpdateCompanyProfileAsync(Company company)
+        {
+            var updateCompany = new
+            {
+                id_user = company.IdUser,
+                name = company.Name,
+                address = company.Adress,  // Mapeamos la propiedad "Adress" a "address"
+                telephone = company.Telephone,
+                contact = company.Contact,
+                mobile = company.Mobile
+            };
+            var json = JsonSerializer.Serialize(updateCompany);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            try
+            {
+                var response = await _httpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateCompanyDetails.php", content);
+                response.EnsureSuccessStatusCode();
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error al actualizar empresa: {ex.Message}");
+                return false;
+            }
 
-
-
+        }
     }
 }
