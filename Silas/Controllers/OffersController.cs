@@ -88,7 +88,7 @@ namespace Silas.Controllers
         }
 
 
-
+        //CREACION DE UNA NUEVA OFERTA POR PARTE DE UNA EMPRESA
         [HttpPost]
         public async Task<IActionResult> CreateOffer([FromBody] OfferInsert offer)
         {

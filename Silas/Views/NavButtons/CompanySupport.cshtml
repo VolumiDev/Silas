@@ -42,6 +42,12 @@
 <h1>Soporte para la empresa @Model.Name</h1>
 
 <form id="supportForm">
+
+    <!-- Campos ocultos con datos de la empresa -->
+    <input type="hidden" id="companyName" name="companyName" value="@Model.Name" />
+    <input type="hidden" id="contact" name="contact" value="@Model.Contact" />
+
+
     <label for="topic">Asunto</label>
     <input type="text" id="topic" name="topic" required placeholder="Escribe el asunto..." />
 
@@ -51,20 +57,24 @@
     <button type="submit">Enviar</button>
 </form>
 
-<!-- Message display area -->
+<!-- Espacio para el mensaje de respuesta del controlador -->
 <div id="responseMessage" style="margin-top: 10px; font-weight: bold;"></div>
+
+<a class="btn btn-dark menu_item" data-title="Mis ofertas" data-id="@Model.IdUser">REGRESAR</a>
 
 <script>
     document.getElementById("supportForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent page reload
+        event.preventDefault(); 
 
         var topic = document.getElementById("topic").value;
         var message = document.getElementById("message").value;
+         var companyName = document.getElementById("companyName").value; //datos de la empresa
+        var contact = document.getElementById("contact").value;
 
         fetch("/Support/SendSupportRequest", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ topic: topic, message: message })
+            body: JSON.stringify({ topic: topic, message: message, companyName: companyName,  contact: contact  })
         })
         .then(response => response.json())
         .then(data => {
@@ -72,7 +82,7 @@
             if (data.success) {
                 responseDiv.style.color = "green";
                 responseDiv.innerText = "¡Mensaje enviado correctamente!";
-                document.getElementById("supportForm").reset(); // Clear form fields
+                document.getElementById("supportForm").reset(); // vaciar el formulario
             } else {
                 responseDiv.style.color = "red";
                 responseDiv.innerText = "Error al enviar el mensaje.";

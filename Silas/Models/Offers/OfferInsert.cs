@@ -1,5 +1,5 @@
 ﻿namespace Silas.Models.Offers
-{
+{//MODELO PARA INSERTAR UNA OFERTA NUEVA EN BD
     public class OfferInsert
     {
     
