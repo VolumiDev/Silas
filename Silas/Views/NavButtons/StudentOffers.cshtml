@@ -1,31 +1,37 @@
 ﻿@model Silas.ViewModels.OffersToStudentProfileViewModel
-@{
-}
+
 <table class="table table-hover">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Titulo</th>
+            <th scope="col">Título</th>
             <th scope="col">Descripción</th>
             <th scope="col">Localización</th>
             <th scope="col">Empresa</th>
             <th scope="col">Fecha Oferta</th>
-        </tr
+            <th scope="col">Acciones</th>
+        </tr>
     </thead>
     <tbody>
-        @for(var i = 0; i < Model.OffersList.Count; i++)
+        @for (var i = 0; i < Model.OffersList.Count; i++)
         {
             <tr>
                 <th scope="row">@(i + 1)</th>
-                <th> @Model.OffersList[i].OffersTitle</th>
-                <th> @Model.OffersList[i].OffersDescription</th>
-                <th> @Model.OffersList[i].OffersLocation</th>
-                <th> @Model.OffersList[i].CompaniesName</th>
-                <th> @Model.OffersList[i].OffersDate.ToString("dd/MM/yyyy")</th>
+                <td>@Model.OffersList[i].OffersTitle</td>
+                <td>@Model.OffersList[i].OffersDescription</td>
+                <td>@Model.OffersList[i].OffersLocation</td>
+                <td>@Model.OffersList[i].CompaniesName</td>
+                <td>@Model.OffersList[i].OffersDate.ToString("dd/MM/yyyy")</td>
+                <td class="text-center">
+                    <a class="menu_item"    
+                        data-title="StudentOfferAplication"
+                        data-id="@Model.OffersList[i].OffersId"
+                        data-aux="@Model.OffersList[i].UserId">
+                        <i class="bi bi-bookmark-plus" style="font-size: 2rem;"></i>
+                    </a>
+                </td>
             </tr>
         }
     </tbody>
-
 </table>
-
 

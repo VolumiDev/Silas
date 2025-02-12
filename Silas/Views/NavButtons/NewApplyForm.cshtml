@@ -1,0 +1,65 @@
+﻿@model Silas.ViewModels.StudentOfferAplicationViewModel
+@{
+    ViewBag.Title = "Formulario Ejemplo";
+}
+
+<div class="d-flex justify-content-center align-content-center">
+    <form id="formAddApply"  class="row g-3 w-50 text-center">
+        <h2>Formulario Ejemplo</h2>
+
+        <div class="col-md-6">
+            <input asp-for="IdOffer" class="form-control" type="hidden" />
+        </div>
+
+        <div class="col-md-6">
+            <input asp-for="Id" class="form-control" type="hidden" />
+        </div>
+
+        <div class="col-12">
+            <label class="form-label"> Presentacion </label>
+            <textarea asp-for="Presentation" class="form-control" required></textarea>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <a class="btn btn-dark menu_item" data-title="Ofertas" data-id="@Model.Id">REGRESAR</a>
+        </div>
+        <p id="responseMessage" class="alert alert-success" style="color: green; display: none;"></p>
+    </form>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#formAddApply").submit(function(e) {
+                e.preventDefault(); // Evita el submit tradicional
+                console.log("Evento submit capturado.");
+
+                var formData = {
+                    IdOffer: $("#formAddApply input[name = 'IdOffer']").val(),
+                    Id: $("#formAddApply input[name = 'Id']").val(),
+                    Presentation: $("#formAddApply textarea[name = 'Presentation']").val(),
+                }
+
+                // Hacemos la llamada AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/Apply/AddApply",
+                    data: JSON.stringify(formData),
+                    contentType: "application/json",
+                    success: function (response) {
+                        $("#responseMessage").text("Inserción exitosa").css("color", "green").show();
+                        $("#formAddApply")[0].reset();
+                        
+                    },
+                    error: function () {
+                        alert("Ha ocurrido un error al procesar la solicitud.");
+                    }
+                });
+            });
+        });
+    </script>
+
+

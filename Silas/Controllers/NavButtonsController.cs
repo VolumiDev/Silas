@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Silas.Models.Companies;
 using Silas.Models.Courses;
 using Silas.Models.Offers;
@@ -25,13 +26,16 @@ namespace Silas.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OnClick(string vacio, string actionName, int superID, int cid=0)
+        public async Task<IActionResult> OnClick(int auxId, string actionName, int superID, int cid=0)
         {
             switch (actionName)
             {
                 case "Ofertas":
 
-                    var response =await _studentService.GetOffersToStodent(superID);
+                    var response =await _studentService.GetOffersToStudent(superID);
+
+                    var apliesResponse = await _studentService.ListAplliesByStudentId(superID);
+
                     var model = new OffersToStudentProfileViewModel
                     {
                         OffersList = response.Offers
@@ -195,6 +199,17 @@ namespace Silas.Controllers
                         Courses = cursos
                     };
                     return PartialView("NewOfferForm",newoffermodel);
+                case "StudentOfferAplication":
+
+                    var formModel = new StudentOfferAplicationViewModel
+                    {
+                        Id = auxId,
+                        IdOffer = superID,
+                        Presentation = ""
+                    };
+
+                    //tenemos que mandar al formularion 
+                    return PartialView("NewApplyForm", formModel);
 
                 default:
                     return PartialView("StudentApplies");
