@@ -35,7 +35,7 @@
                 .done(function (response) {
                     // Tras guardar, redirige (vía AJAX) a "EmpresaDetalle"
                     var companyId = $('input[name="IdUser"]').val();
-                    $.get('/NavButtons/OnClick', { title: 'EmpresaDetalle', id: companyId }, function (data) {
+                    $.get('/NavButtons/OnClick', { actionName: 'EmpresaDetalle', superID: companyId }, function (data) {
                         $('#central_panel').html(data);
                     });
                 })

@@ -1,8 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1>
-    Estamos en APLIQUES
-</h1>
+﻿@model Silas.ViewModels.OffersToStudentProfileViewModel
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Oferta</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">Localización</th>
+            <th scope="col">Presentacion</th>
+            <th scope="col">Fecha Aplique</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < Model.AppliesToStudentProfile.Count; i++)
+        {
+            var rowStyle = "";
+            @if (@Model.AppliesToStudentProfile[i].StudentsOffersStatus == 1)
+            {
+                rowStyle = "table-warning";
+            }
+            else if (@Model.AppliesToStudentProfile[i].StudentsOffersStatus == 2)
+            {
+                rowStyle = "table-success";
+
+            }
+            else
+            {
+                rowStyle = "table-danger";
+
+            }
+
+
+            <tr class="@rowStyle">
+                <th scope="row">@(i + 1)</th>
+                <td>@Model.AppliesToStudentProfile[i].OffersTitle</td>
+                <td>@Model.AppliesToStudentProfile[i].CompaniesName</td>
+                <td>@Model.AppliesToStudentProfile[i].OffersLocation</td>
+                <td>@Model.AppliesToStudentProfile[i].StudentsOffersPresentation</td>
+                <td>@Model.AppliesToStudentProfile[i].StudentsOffersDate.ToString("dd/MM/yyyy")</td>
+                <td class="text-center">
+                    <a class="menu_item"
+                       data-title="Delete"
+                        @* Estamos por aqui pendiente de hacer la logica de borrado*@
+                       data-id="@Model.AppliesToStudentProfile[i].OffersId">
+                        <i class="bi bi-trash3" style="font-size: 2rem; color: red;"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

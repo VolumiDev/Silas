@@ -62,7 +62,18 @@ namespace Silas.Models.Companies
         //ACTUALIZA LOS DATOS DE LA COPAÑIA EN LA BBDD
         public async Task<bool> UpdateCompanyAsync(Company company)
         {
-            var json = JsonSerializer.Serialize(company);
+            //COMO HEMOS SERIALIZADO PARA UN JSON EN "Company" DEBEMOS CONSTRUIR UN OBJETO CON LOS DATOS Q ESPERA AHORA EL PHP
+            var jsonObj = new
+            {
+                id_user = company.IdUser,
+                adress = company.Adress,
+                telephone = company.Telephone,
+                contact = company.Contact,
+                mobile = company.Mobile,
+                status = company.Status
+            };
+
+            var json = JsonSerializer.Serialize(jsonObj);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             try
@@ -76,6 +87,7 @@ namespace Silas.Models.Companies
                 return false;
             }
         }
+
 
 
         //DESACTIVA UNA COMPAÑIA EN LA BBDD

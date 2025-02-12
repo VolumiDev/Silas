@@ -1,5 +1,6 @@
 ﻿using Silas.Models.Applies;
 using Silas.Models.Offers;
+using Silas.ViewModels;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -43,7 +44,7 @@ namespace Silas.Models.Student
 
 
         //NOS TRAEMOS LAS OFERTAA PARA UN ALUMNO
-        public async Task<OffersResponseToStudentProfile> GetOffersToStodent(int id)
+        public async Task<OffersResponseToStudentProfile> GetOffersToStudent(int id)
         {
             try
             {
@@ -67,12 +68,14 @@ namespace Silas.Models.Student
         public async Task<Student> GetStudentByIdAsync(int id)
         {
             var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentByUserID.php?id_student={id}");
+
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
             var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return student;
         }
+
 
         public async Task<bool> UpdateStudentAsync(Student student)
         {
@@ -93,6 +96,73 @@ namespace Silas.Models.Student
             var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return student;
         }*/ //Juanan: no he encontrado en ningun lado el php de esto, al igual que la carpeta Student abajo. Supongo que se creo para el admin o algo.
+
+
+        public async Task<List<Student>> GetAllStudentsAsync()
+        {
+            try
+            {
+                //LISTSTUDENTS ES UN PHP QUE TODAVIA NO EXISTE
+                var response = await _HttpClient.GetAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/listStudents.php");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var students = JsonSerializer.Deserialize<List<Student>>(json);
+                return students ?? new List<Student>();
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error en GetAllStudentsAsync: {ex.Message}");
+                return new List<Student>();
+            }
+        }
+
+        public async Task<bool> AddStudentApply(StudentOfferAplicationViewModel req)
+        {
+            var json = JsonSerializer.Serialize(req);
+            Console.WriteLine(json);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _HttpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/addStudenApply.php", content);
+                response.EnsureSuccessStatusCode();
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+
+            }
+        }
+
+
+        public async Task<AppliesResponseToStudentProfile> GetAppliesToStudentProfileAsync(int id)
+        {
+            try
+            {
+                var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getAppliesToStudentProfile.php?id_user={id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<AppliesResponseToStudentProfile>(json);
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return null;
+
+            }
+
+        }
+
 
     }
 }

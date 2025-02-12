@@ -40,14 +40,14 @@ namespace Silas.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool result = await _companyService.UpdateCompanyAsync(company);
+                var result = await _companyService.UpdateCompanyAsync(company);
                 if (result)
-                {
-                    return RedirectToAction("OnClick", "NavButtons", new { title = "EmpresaDetalle", id = company.IdUser });
-                }
+                    // Redirige al listado de empresas
+                    return RedirectToAction("OnClick", "NavButtons", new { actionName = "Ver Empresas" });
             }
             return View("~/Views/NavButtons/CompanyEdit.cshtml", company);
         }
+
 
 
         //PASAR UNA EMPRESA SU "STATUS" A 0

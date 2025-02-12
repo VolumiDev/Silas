@@ -61,7 +61,7 @@
     <label for="location">Ubicación</label>
     <input type="text" asp-for="@Model.Offer.location" required />
 
-    <!-- Hidden input to store id_company -->
+    <!-- Campo oculto para el id de empresa -->
     <input type="hidden" asp-for="@Model.Offer.id_company" value="@Model.IdCompany"/>
 
  
@@ -78,7 +78,7 @@
 <script>
     $(document).ready(function () {
         $("#newofferform").submit(function (event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); 
 
             var formData = {
                 title: $("#newofferform input[name='Offer.title']").val(),
@@ -91,12 +91,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Offers/CreateOffer", // Controller endpoint
+                url: "/Offers/CreateOffer", // Controlador para crear oferta
                 data: JSON.stringify(formData),
                 contentType: "application/json",
                 success: function (response) {
                     $("#responseMessage").text("Inserción exitosa").css("color", "green").show();
-                    $("#newofferform")[0].reset(); // Reset form after success
+                    $("#newofferform")[0].reset(); // Resetear formulario
                 },
                 error: function () {
                     $("#responseMessage").text("Error en la inserción").css("color", "red").show();

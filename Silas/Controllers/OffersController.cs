@@ -40,21 +40,16 @@ namespace Silas.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> EditOffer(Offer offer)
         {
-            // Lógica para actualizar la oferta en BD
-            bool result = await _offerService.UpdateOfferAsync(offer);
-            if (result)
+            bool updated = await _offerService.UpdateOfferAsync(offer);
+            if (updated)
             {
-                // 1) Redirigir vía AJAX a la vista de detalles de la empresa. 
-                //    Pero OJO: un RedirectToAction normal vuelve con una respuesta 302 
-                //    y en AJAX se interpretaría distinto.
-                // 2) Lo mejor: Devolver un JSON o algo que indique "OK" y en success, re-cargar la partial.
                 return Json(new { success = true, companyId = offer.id_company });
             }
             return Json(new { success = false, error = "No se pudo actualizar la oferta." });
         }
+
 
 
         //ELIMINAR UNA OFERTA "X"
@@ -88,7 +83,7 @@ namespace Silas.Controllers
         }
 
 
-
+        //CREACION DE UNA NUEVA OFERTA POR PARTE DE UNA EMPRESA
         [HttpPost]
         public async Task<IActionResult> CreateOffer([FromBody] OfferInsert offer)
         {
@@ -105,6 +100,12 @@ namespace Silas.Controllers
             }
 
 
+        }
+
+        [HttpPost]
+        public IActionResult OfferApply(int id)
+        {
+            return RedirectToAction("OnClick", "NavButtonsController", new { vacio = "", actionName = "Ofertas", superID = id, cid = 0 });
         }
 
 
