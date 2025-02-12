@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Silas.Models.Companies;
 using Silas.Models.Courses;
 using Silas.Models.Offers;
@@ -25,13 +26,16 @@ namespace Silas.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OnClick(string vacio, string actionName, int superID, int cid=0)
+        public async Task<IActionResult> OnClick(int auxId, string actionName, int superID, int cid=0)
         {
             switch (actionName)
             {
                 case "Ofertas":
 
-                    var response =await _studentService.GetOffersToStodent(superID);
+                    var response =await _studentService.GetOffersToStudent(superID);
+
+                    var apliesResponse = await _studentService.ListAplliesByStudentId(superID);
+
                     var model = new OffersToStudentProfileViewModel
                     {
                         OffersList = response.Offers
@@ -40,7 +44,34 @@ namespace Silas.Controllers
                     return PartialView("StudentOffers", model);
 
                 case "Inicio":
-                    return PartialView("StudentHome");
+                    {
+                        var companies2 = await _companyService.ListAllCompaniesAsync();
+                        int companiesCount = companies2?.Count ?? 0;
+
+                        var offersList = await _offerService.GetLatestOffersForAdminAsync(); 
+                        int offersCount = offersList?.Count ?? 0;
+
+                        //STUDENTS NO ESTÁ FUNCIONANDO FALTA EL PHP
+                        var students = await _studentService.GetAllStudentsAsync();
+                        int studentsCount = students?.Count ?? 0;
+
+                        int applicationsCount = 0;
+                        foreach (var offer2 in offersList)
+                        {
+                            var apps = await _offerService.GetOfferApplicationsAsync(offer2.id);
+                            applicationsCount += apps.Count;
+                        }
+
+                        var dashboardModel = new DashboardViewModel
+                        {
+                            CompaniesCount = companiesCount,
+                            OffersCount = offersCount,
+                            StudentsCount = studentsCount, //NO ESTÁ FUNCIONANDO, FALTA EL PHP
+                            ApplicationsCount = applicationsCount
+                        };
+
+                        return PartialView("Dashboard", dashboardModel);
+                    }
 
                 case "Soporte":
                     return PartialView("StudentSupport");
@@ -168,10 +199,37 @@ namespace Silas.Controllers
                         Courses = cursos
                     };
                     return PartialView("NewOfferForm",newoffermodel);
+
                 case "Soporte Empresa":
                     var companysupport = await _companyService.GetCompanyByIdAsync(superID);
 
-                    return PartialView("CompanySupport",companysupport);
+                     return PartialView("CompanySupport",companysupport);
+
+                case "StudentOfferAplication":
+
+                    var formModel = new StudentOfferAplicationViewModel
+                    {
+                        Id = auxId,
+                        IdOffer = superID,
+                        Presentation = ""
+                    };
+
+                    //tenemos que mandar al formularion 
+                    return PartialView("NewApplyForm", formModel);
+
+                case "Mis apliques":
+
+                    var appToStudentProf = await _studentService.GetAppliesToStudentProfileAsync(superID);
+
+                    var modelAppliesList = new OffersToStudentProfileViewModel
+                    {
+                        AppliesToStudentProfile = appToStudentProf.Applies
+                    };
+
+                    return PartialView("StudentApplies", modelAppliesList);
+
+
+
                 default:
                     return PartialView("StudentApplies");
             }
