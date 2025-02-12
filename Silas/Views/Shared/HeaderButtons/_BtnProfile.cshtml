@@ -12,10 +12,24 @@
     <!-- MENÚ -->
     <div class="profile-dropdown" style="z-index:999">
         <ul>
-            <li>Perfil (@Model.userRole)</li>
+            @if (Model.userRole.ToLower() == "student")
+            {
+                <li>
+                    <a class="menu_item" data-title="PerfilEstudiante" data-id="@Model.userId">
+                        Perfil (@Model.userRole)
+                    </a>
+                </li>
+            }
+            else if (Model.userRole.ToLower() == "company")
+            {
+                <li>
+                    <a class="menu_item" data-title="PerfilCompany" data-id="@Model.userId">
+                        Perfil (@Model.userRole)
+                    </a>
+                </li>
+            }
             <li>Configuración</li>
-            <li>Logout</li>
+            <li><a href="/Account/Logout">Logout</a></li>
         </ul>
     </div>
-
 </div>

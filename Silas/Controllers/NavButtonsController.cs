@@ -169,6 +169,25 @@ namespace Silas.Controllers
                     };
                     return PartialView("NewOfferForm",newoffermodel);
 
+                // Perfil de Estudiante
+                case "PerfilEstudiante":
+                    var student = await _studentService.GetStudentByIdAsync(superID);
+                    if (student == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return PartialView("ProfileStudent", student);
+
+                // Perfil de Empresa
+                case "PerfilCompany":
+                    var companyProfile = await _companyService.GetCompanyByIdAsync(superID);
+                    if (companyProfile == null)
+                        return NotFound();
+
+                    return PartialView("ProfileCompany", companyProfile);
+
+
                 default:
                     return PartialView("StudentApplies");
             }

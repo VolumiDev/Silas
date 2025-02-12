@@ -1,0 +1,100 @@
+﻿@model Silas.Models.Company
+
+<div class="company-profile">
+    <form id="editCompanyForm" method="post" action="/Company/UpdateProfile">
+        <!-- Campo oculto para el id de la empresa -->
+        <input type="hidden" name="id_user" value="@Model.IdUser" />
+
+        <table class="table table-borderless">
+            <tr>
+                <th>Nombre</th>
+                <td>
+                    <span class="read-only">@Model.Name</span>
+                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td>
+                    <span class="read-only">@Model.Adress</span>
+                    <input type="text" name="address" class="form-control edit-field" value="@Model.Adress" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>
+                    <span class="read-only">@Model.Telephone</span>
+                    <input type="text" name="telephone" class="form-control edit-field" value="@Model.Telephone" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Contacto</th>
+                <td>
+                    <span class="read-only">@Model.Contact</span>
+                    <input type="text" name="contact" class="form-control edit-field" value="@Model.Contact" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Móvil</th>
+                <td>
+                    <span class="read-only">@Model.Mobile</span>
+                    <input type="text" name="mobile" class="form-control edit-field" value="@Model.Mobile" style="display:none;" />
+                </td>
+            </tr>
+            <input type="hidden" name="status" value="@Model.Status" />
+        </table>
+
+        <!-- Botones para editar, guardar y cancelar -->
+        <div class="form-group text-right mt-3">
+            <button type="button" id="editCompanyButton" class="btn btn-primary">Editar</button>
+            <!-- El botón "Guardar" es de tipo submit -->
+            <button type="submit" id="saveCompanyButton" class="btn btn-success" style="display:none;">Guardar</button>
+            <button type="button" id="cancelCompanyButton" class="btn btn-secondary" style="display:none;">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Script para gestionar el modo edición y el envío vía AJAX -->
+<script>
+    $(document).ready(function(){
+        // Al hacer clic en "Editar", se ocultan los elementos de solo lectura y se muestran los campos editables.
+        $("#editCompanyButton").click(function(){
+            $(".read-only").hide();
+            $(".edit-field").show();
+            $("#editCompanyButton").hide();
+            $("#saveCompanyButton, #cancelCompanyButton").show();
+        });
+
+        // Intercepta el envío del formulario (Guardar) para enviarlo vía AJAX.
+        $("#editCompanyForm").submit(function(e){
+            e.preventDefault(); // Evita el envío tradicional
+            var formData = $(this).serialize();
+            console.log("Datos enviados:", formData);
+            var userId = $("input[name='id_user']").val();
+            console.log("userId recuperado:", userId);
+            $.ajax({
+                url: '/Company/UpdateProfile', // Endpoint en CompanyController
+                type: 'POST',
+                data: formData,
+                success: function(response){
+                    // Tras actualizar, recargamos la vista del perfil mediante otra llamada AJAX.
+                    $.get('/NavButtons/OnClick', { actionName: "PerfilCompany", superID: userId }, function(html){
+                        $('#central_panel').html(html);
+                    });
+                },
+                error: function(xhr, status, error){
+                    console.error("Error al actualizar la empresa: " + error);
+                    alert("Error actualizando el perfil de la empresa.");
+                }
+            });
+        });
+
+        // Al hacer clic en "Cancelar", se recarga el perfil actual sin modificar nada.
+        $("#cancelCompanyButton").click(function(){
+            var userId = $("input[name='id_user']").val();
+            $.get('/NavButtons/OnClick', { actionName: "PerfilCompany", superID: userId }, function(html){
+                $('#central_panel').html(html);
+            });
+        });
+    });
+</script>

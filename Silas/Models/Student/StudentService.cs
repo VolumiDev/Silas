@@ -1,6 +1,7 @@
 ﻿using Silas.Models.Applies;
 using Silas.Models.Offers;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace Silas.Models.Student
@@ -65,12 +66,33 @@ namespace Silas.Models.Student
         }
         public async Task<Student> GetStudentByIdAsync(int id)
         {
+            var response = await _HttpClient.GetAsync($"http://localhost/endpoint/getStudentByUserID.php?id_student={id}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("JSON recibido: " + json);
+            var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return student;
+        }
+
+        public async Task<bool> UpdateStudentAsync(Student student)
+        {
+            var json = JsonSerializer.Serialize(student);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // Suponiendo que el endpoint para actualizar es updateStudent.php
+            var response = await _HttpClient.PostAsync("http://localhost/endpoint/updateStudentProfile.php", content);
+            return response.IsSuccessStatusCode;
+        }
+
+
+
+        /*public async Task<Student> GetStudentByIdAsync(int id)
+        {
             var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentDetails.php?id_student={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return student;
-        }
+        }*/ //Juanan: no he encontrado en ningun lado el php de esto, al igual que la carpeta Student abajo. Supongo que se creo para el admin o algo.
 
     }
 }

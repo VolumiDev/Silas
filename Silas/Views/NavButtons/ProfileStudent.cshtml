@@ -1,0 +1,160 @@
+﻿@model Silas.Models.Student.Student
+
+<div class="student-profile">
+    <!-- Formulario para editar el perfil -->
+    <form id="editStudentForm" method="post" action="/Student/UpdateProfile">
+        <!-- Campo oculto para el id del estudiante -->
+        <input type="hidden" name="id_user" value="@Model.id_user" />
+
+        <table class="table table-borderless">
+            <tr>
+                <th>NIE</th>
+                <td>
+                    <span class="read-only">@Model.nie</span>
+                    <input type="text" name="nie" class="form-control edit-field" value="@Model.nie" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>
+                    <span class="read-only">@Model.name</span>
+                    <input type="text" name="name" class="form-control edit-field" value="@Model.name" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>
+                    <span class="read-only">@Model.surname</span>
+                    <input type="text" name="surname" class="form-control edit-field" value="@Model.surname" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Género</th>
+                <td>
+                    <span class="read-only">@Model.gendre</span>
+                    <input type="text" name="gendre" class="form-control edit-field" value="@Model.gendre" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Fecha de Nacimiento</th>
+                <td>
+                    <span class="read-only">@Model.birthdate.ToString("dd/MM/yyyy")</span>
+                    <input type="date" name="birthdate" class="form-control edit-field" value="@Model.birthdate.ToString("yyyy-MM-dd")" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>
+                    <span class="read-only">@Model.phone</span>
+                    <input type="text" name="phone" class="form-control edit-field" value="@Model.phone" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono Emergencia</th>
+                <td>
+                    <span class="read-only">@Model.emer_phone</span>
+                    <input type="text" name="emer_phone" class="form-control edit-field" value="@Model.emer_phone" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Nacionalidad</th>
+                <td>
+                    <span class="read-only">@Model.nationality</span>
+                    <input type="text" name="nationality" class="form-control edit-field" value="@Model.nationality" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Cuenta con Coche</th>
+                <td>
+                    <span class="read-only">@((Model.car == 1) ? "Sí" : "No")</span>
+                    <select name="car" class="form-control edit-field" style="display:none;">
+                        @if (Model.car == 1)
+                        {
+                            <option value="1" selected>Sí</option>
+                            <option value="0">No</option>
+                        }
+                        else
+                        {
+                            <option value="1">Sí</option>
+                            <option value="0" selected>No</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td>
+                    <span class="read-only">@Model.address</span>
+                    <input type="text" name="address" class="form-control edit-field" value="@Model.address" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>Año</th>
+                <td>
+                    <span class="read-only">@Model.year</span>
+                    <input type="number" name="year" class="form-control edit-field" value="@Model.year" style="display:none;" />
+                </td>
+            </tr>
+            <tr>
+                <th>CV</th>
+                <td>
+                    <span class="read-only">@Model.cv</span>
+                    <input type="text" name="cv" class="form-control edit-field" value="@Model.cv" style="display:none;" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="form-group text-right mt-3">
+            <button type="button" id="editButton" class="btn btn-primary">Editar</button>
+            <button type="submit" id="saveButton" class="btn btn-success" style="display:none;">Guardar</button>
+            <button type="button" id="cancelButton" class="btn btn-secondary" style="display:none;">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Script para gestionar el modo edición y enviar el formulario vía AJAX -->
+<script>
+    $(document).ready(function(){
+        // Cuando se hace click en "Editar", se ocultan los elementos de solo lectura y se muestran los campos editables
+        $("#editButton").click(function(){
+            $(".read-only").hide();
+            $(".edit-field").show();
+            $("#editButton").hide();
+            $("#saveButton, #cancelButton").show();
+        });
+
+        // Intercepta el envío del formulario al hacer click en "Guardar"
+        $("#editStudentForm").submit(function(e) {
+            e.preventDefault(); // Evita el envío tradicional que recargaría la página
+
+            // Serializa los datos del formulario
+            var formData = $(this).serialize();
+
+            // Envía los datos vía AJAX al endpoint de actualización
+            $.ajax({
+                url: '/Student/UpdateProfile', // Asegúrate de que esta URL es la correcta en tu aplicación
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Al recibir una respuesta exitosa, se recarga el perfil actualizado.
+                    var userId = $("input[name='id_user']").val();
+                    $.get('/NavButtons/OnClick', { actionName: "PerfilEstudiante", superID: userId }, function (html) {
+                        $('#central_panel').html(html);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error al actualizar: " + error);
+                    alert("Hubo un error actualizando el perfil.");
+                }
+            });
+        });
+
+        // En caso de cancelar, se recarga el perfil original sin modificar nada en BD
+        $("#cancelButton").click(function(){
+            var userId = $("input[name='id_user']").val();
+            $.get('/NavButtons/OnClick', { actionName: "PerfilEstudiante", superID: userId }, function (html) {
+                $('#central_panel').html(html);
+            });
+        });
+    });
+</script>

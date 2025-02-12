@@ -114,5 +114,14 @@ namespace Silas.Controllers
             }
             return View();
         }
+        //LOGOUT
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Limpia la sesión si es necesario
+                                         // Si usas autenticación, puedes hacer:
+                                         // await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
