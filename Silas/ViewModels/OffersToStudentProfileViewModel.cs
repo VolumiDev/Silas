@@ -8,5 +8,7 @@ namespace Silas.ViewModels
         public List<OffersToStudentProfile> OffersList { get; set; }
 
         public List<ApplyByStudent> AppliesList { get; set; }
+
+        public List<ApplyToStudentProfile> AppliesToStudentProfile {  get; set; }
 }
 }

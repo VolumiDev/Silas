@@ -114,5 +114,31 @@ namespace Silas.Models.Student
             }
         }
 
+
+        public async Task<AppliesResponseToStudentProfile> GetAppliesToStudentProfileAsync(int id)
+        {
+            try
+            {
+                var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getAppliesToStudentProfile.php?id_user={id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<AppliesResponseToStudentProfile>(json);
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return null;
+
+            }
+
+        }
+
     }
 }

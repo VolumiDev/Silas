@@ -211,6 +211,20 @@ namespace Silas.Controllers
                     //tenemos que mandar al formularion 
                     return PartialView("NewApplyForm", formModel);
 
+                case "Mis apliques":
+
+                    var appToStudentProf = await _studentService.GetAppliesToStudentProfileAsync(superID);
+
+                    var modelAppliesList = new OffersToStudentProfileViewModel
+                    {
+                        AppliesToStudentProfile = appToStudentProf.Applies
+                    };
+
+                    return PartialView("StudentApplies", modelAppliesList);
+
+
+
+
                 default:
                     return PartialView("StudentApplies");
             }
