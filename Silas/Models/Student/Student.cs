@@ -5,7 +5,7 @@ namespace Silas.Models.Student
     public class Student
     {
         [JsonPropertyName("id_user")]
-        public long IdUser { get; set; }
+        public int IdUser { get; set; }
 
         [JsonPropertyName("nie")]
         public string Nie { get; set; }
@@ -38,7 +38,7 @@ namespace Silas.Models.Student
         public string Address { get; set; }
 
         [JsonPropertyName("year")]
-        public long? Year { get; set; }
+        public int? Year { get; set; }
 
         [JsonPropertyName("register_date")]
         public DateTime RegisterDate { get; set; }

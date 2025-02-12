@@ -37,7 +37,7 @@ namespace Silas.Controllers
             }
 
             // Vuelve a cargar el perfil actualizado (usando el servicio para obtener los datos actualizados)
-            var updatedStudent = await _studentService.GetStudentByIdAsync(student.id_user);
+            var updatedStudent = await _studentService.GetStudentByIdAsync(student.IdUser);
             return PartialView("~/Views/NavButtons/ProfileStudent.cshtml", updatedStudent);
         }
     }

@@ -4,71 +4,71 @@
     <!-- Formulario para editar el perfil -->
     <form id="editStudentForm" method="post" action="/Student/UpdateProfile">
         <!-- Campo oculto para el id del estudiante -->
-        <input type="hidden" name="id_user" value="@Model.id_user" />
+        <input type="hidden" name="id_user" value="@Model.IdUser" />
 
         <table class="table table-borderless">
             <tr>
                 <th>NIE</th>
                 <td>
-                    <span class="read-only">@Model.nie</span>
-                    <input type="text" name="nie" class="form-control edit-field" value="@Model.nie" style="display:none;" />
+                    <span class="read-only">@Model.Nie</span>
+                    <input type="text" name="nie" class="form-control edit-field" value="@Model.Nie" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Nombre</th>
                 <td>
-                    <span class="read-only">@Model.name</span>
-                    <input type="text" name="name" class="form-control edit-field" value="@Model.name" style="display:none;" />
+                    <span class="read-only">@Model.Name</span>
+                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Apellidos</th>
                 <td>
-                    <span class="read-only">@Model.surname</span>
-                    <input type="text" name="surname" class="form-control edit-field" value="@Model.surname" style="display:none;" />
+                    <span class="read-only">@Model.Surname</span>
+                    <input type="text" name="surname" class="form-control edit-field" value="@Model.Surname" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Género</th>
                 <td>
-                    <span class="read-only">@Model.gendre</span>
-                    <input type="text" name="gendre" class="form-control edit-field" value="@Model.gendre" style="display:none;" />
+                    <span class="read-only">@Model.Gendre</span>
+                    <input type="text" name="gendre" class="form-control edit-field" value="@Model.Gendre" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Fecha de Nacimiento</th>
                 <td>
-                    <span class="read-only">@Model.birthdate.ToString("dd/MM/yyyy")</span>
-                    <input type="date" name="birthdate" class="form-control edit-field" value="@Model.birthdate.ToString("yyyy-MM-dd")" style="display:none;" />
+                    <span class="read-only">@Model.Birthdate.ToString("dd/MM/yyyy")</span>
+                    <input type="date" name="birthdate" class="form-control edit-field" value="@Model.Birthdate.ToString("yyyy-MM-dd")" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Teléfono</th>
                 <td>
-                    <span class="read-only">@Model.phone</span>
-                    <input type="text" name="phone" class="form-control edit-field" value="@Model.phone" style="display:none;" />
+                    <span class="read-only">@Model.Phone</span>
+                    <input type="text" name="phone" class="form-control edit-field" value="@Model.Phone" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Teléfono Emergencia</th>
                 <td>
-                    <span class="read-only">@Model.emer_phone</span>
-                    <input type="text" name="emer_phone" class="form-control edit-field" value="@Model.emer_phone" style="display:none;" />
+                    <span class="read-only">@Model.EmerPhone</span>
+                    <input type="text" name="emer_phone" class="form-control edit-field" value="@Model.EmerPhone" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Nacionalidad</th>
                 <td>
-                    <span class="read-only">@Model.nationality</span>
-                    <input type="text" name="nationality" class="form-control edit-field" value="@Model.nationality" style="display:none;" />
+                    <span class="read-only">@Model.Nationality</span>
+                    <input type="text" name="nationality" class="form-control edit-field" value="@Model.Nationality" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Cuenta con Coche</th>
                 <td>
-                    <span class="read-only">@((Model.car == 1) ? "Sí" : "No")</span>
+                    <span class="read-only">@((Model.Car == 1) ? "Sí" : "No")</span>
                     <select name="car" class="form-control edit-field" style="display:none;">
-                        @if (Model.car == 1)
+                        @if (Model.Car == 1)
                         {
                             <option value="1" selected>Sí</option>
                             <option value="0">No</option>
@@ -84,22 +84,22 @@
             <tr>
                 <th>Dirección</th>
                 <td>
-                    <span class="read-only">@Model.address</span>
-                    <input type="text" name="address" class="form-control edit-field" value="@Model.address" style="display:none;" />
+                    <span class="read-only">@Model.Address</span>
+                    <input type="text" name="address" class="form-control edit-field" value="@Model.Address" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>Año</th>
                 <td>
-                    <span class="read-only">@Model.year</span>
-                    <input type="number" name="year" class="form-control edit-field" value="@Model.year" style="display:none;" />
+                    <span class="read-only">@Model.Year</span>
+                    <input type="number" name="year" class="form-control edit-field" value="@Model.Year" style="display:none;" />
                 </td>
             </tr>
             <tr>
                 <th>CV</th>
                 <td>
-                    <span class="read-only">@Model.cv</span>
-                    <input type="text" name="cv" class="form-control edit-field" value="@Model.cv" style="display:none;" />
+                    <span class="read-only">@Model.Cv</span>
+                    <input type="text" name="cv" class="form-control edit-field" value="@Model.Cv" style="display:none;" />
                 </td>
             </tr>
         </table>
