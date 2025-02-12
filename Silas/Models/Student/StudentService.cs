@@ -91,6 +91,8 @@ namespace Silas.Models.Student
             {
                 Console.WriteLine($"Error en GetAllStudentsAsync: {ex.Message}");
                 return new List<Student>();
+            }
+        }
 
         public async Task<bool> AddStudentApply(StudentOfferAplicationViewModel req)
         {
