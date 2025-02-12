@@ -1,0 +1,122 @@
+﻿@model Silas.ViewModels.DashboardViewModel
+@{
+    Layout = "~/Views/Shared/_GenericLayout.cshtml"; 
+}
+<div class="dashboard-container">
+    <h1>Dashboard</h1>
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Empresas</h3>
+            <p>@Model.CompaniesCount</p>
+        </div>
+        <div class="stat-card">
+            <h3>Ofertas</h3>
+            <p>@Model.OffersCount</p>
+        </div>
+        <div class="stat-card">
+            <h3>Estudiantes</h3>
+            <p>@Model.StudentsCount</p>
+        </div>
+        <div class="stat-card">
+            <h3>Apliques</h3>
+            <p>@Model.ApplicationsCount</p>
+        </div>
+    </div>
+
+    <div class="charts">
+        <canvas id="barChart"></canvas>
+    </div>
+    <div class="charts">
+        <h3>Gráfico 3D (Plotly)</h3>
+        <div id="plotlyChart" style="width: 600px; height: 400px;"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var data = {
+        labels: ['Empresas', 'Ofertas', 'Estudiantes', 'Apliques'],
+        datasets: [{
+            label: 'Estadísticas',
+            data: [@Model.CompaniesCount, @Model.OffersCount, @Model.StudentsCount, @Model.ApplicationsCount],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(255, 99, 132, 0.6)'
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Estadísticas generales' }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    };
+
+    var ctx = document.getElementById('barChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var data3D = [{
+        x: ['Empresas', 'Ofertas', 'Estudiantes', 'Apliques'],
+        y: [@Model.CompaniesCount, @Model.OffersCount, @Model.StudentsCount, @Model.ApplicationsCount],
+        type: 'bar',
+        marker: { color: 'rgb(142,124,195)' }
+    }];
+
+    var layout3D = {
+        title: 'Estadísticas 3D',
+        margin: { t: 50, l: 25, r: 25, b: 25 },
+        scene: { 
+            xaxis: { title: 'Categorías' },
+            yaxis: { title: 'Cantidad' }
+        }
+    };
+
+    Plotly.newPlot('plotlyChart', data3D, layout3D);
+</script>
+
+<style>
+    .dashboard-container {
+        padding: 20px;
+    }
+    .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 40px;
+    }
+    .stat-card {
+        background: #f0f0f0;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    .stat-card:hover {
+        transform: scale(1.05);
+    }
+    .charts {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+</style>
