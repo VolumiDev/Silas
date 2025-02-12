@@ -28,8 +28,8 @@ namespace Silas.Controllers
             var offersList = await _offerService.GetLatestOffersForAdminAsync();
             int offersCount = offersList?.Count ?? 0;
 
-            //var studentsList = await _studentService.GetAllStudentsAsync(); FALTA ESTE PHP
-            //int studentsCount = studentsList?.Count ?? 0;
+            var studentsList = await _studentService.GetAllStudentsAsync();
+            int studentsCount = studentsList?.Count ?? 0;
 
             int applicationsCount = 0;
             foreach (var offer in offersList)
@@ -42,7 +42,7 @@ namespace Silas.Controllers
             {
                 CompaniesCount = companiesCount,
                 OffersCount = offersCount,
-                //StudentsCount = studentsCount,
+                StudentsCount = studentsCount,
                 ApplicationsCount = applicationsCount
             };
 
