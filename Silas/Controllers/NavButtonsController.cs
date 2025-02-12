@@ -199,6 +199,12 @@ namespace Silas.Controllers
                         Courses = cursos
                     };
                     return PartialView("NewOfferForm",newoffermodel);
+
+                case "Soporte Empresa":
+                    var companysupport = await _companyService.GetCompanyByIdAsync(superID);
+
+                     return PartialView("CompanySupport",companysupport);
+
                 case "StudentOfferAplication":
 
                     var formModel = new StudentOfferAplicationViewModel
@@ -221,7 +227,6 @@ namespace Silas.Controllers
                     };
 
                     return PartialView("StudentApplies", modelAppliesList);
-
 
 
 

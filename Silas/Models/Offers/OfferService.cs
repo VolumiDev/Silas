@@ -86,6 +86,7 @@ namespace Silas.Models.Offers
             }
         }
 
+        //CREACION DE LA OFERTA NUEVA, UTILIZANDO EL ENDPOINT "createNewOffer.php"  
         public async Task<bool> CreateOfferAsync(OfferInsert offer)
 
 
