@@ -107,6 +107,12 @@ namespace Silas.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult OfferApply(int id)
+        {
+            return RedirectToAction("OnClick", "NavButtonsController", new { vacio = "", actionName = "Ofertas", superID = id, cid = 0 });
+        }
+
 
 
 

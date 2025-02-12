@@ -1,6 +1,8 @@
 ﻿using Silas.Models.Applies;
 using Silas.Models.Offers;
+using Silas.ViewModels;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace Silas.Models.Student
@@ -42,7 +44,7 @@ namespace Silas.Models.Student
 
 
         //NOS TRAEMOS LAS OFERTAA PARA UN ALUMNO
-        public async Task<OffersResponseToStudentProfile> GetOffersToStodent(int id)
+        public async Task<OffersResponseToStudentProfile> GetOffersToStudent(int id)
         {
             try
             {
@@ -65,11 +67,30 @@ namespace Silas.Models.Student
         }
         public async Task<Student> GetStudentByIdAsync(int id)
         {
-            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentDetails.php?id_student={id}");
+            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentById.php{id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var student = JsonSerializer.Deserialize<Student>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return student;
+        }
+
+        public async Task<bool> AddStudentApply(StudentOfferAplicationViewModel req)
+        {
+            var json = JsonSerializer.Serialize(req);
+            Console.WriteLine(json);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _HttpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/addStudenApply.php", content);
+                response.EnsureSuccessStatusCode();
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
         }
 
     }

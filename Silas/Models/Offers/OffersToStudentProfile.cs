@@ -4,6 +4,9 @@ namespace Silas.Models.Offers
 {
     public class OffersToStudentProfile
     {
+        [JsonPropertyName("user_id")]
+        public int UserId { get; set; }
+
         [JsonPropertyName("offers_id")]
         public int OffersId { get; set; }
 

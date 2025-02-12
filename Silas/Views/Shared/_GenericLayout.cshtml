@@ -71,9 +71,10 @@
             e.preventDefault(); // Evita la navegación completa
             var title = $(this).data('title');
             var id = $(this).data('id');
+            var aux = $(this).data('aux');
             var cid = $(this).data('cid') || 0; //SI NO EXISTE 'cid' ENVIA 0 Y YA ESTÁ
             // En este caso, para "EmpresaDetalle" se usa AJAX y se carga en #central_panel
-            $.get('/NavButtons/OnClick', { actionName: title, superID: id }, function (data) {
+            $.get('/NavButtons/OnClick', { actionName: title, superID: id, auxId: aux }, function (data) {
                 $('#central_panel').html(data);
             });
         });
