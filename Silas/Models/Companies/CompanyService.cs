@@ -39,7 +39,7 @@ namespace Silas.Models.Companies
         {
             try
             {
-                var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getCompanyById.php?id_user={idUser}");
+                var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getCompanyById.php?id={idUser}");
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
@@ -232,7 +232,7 @@ namespace Silas.Models.Companies
         //PREVIO A LA ENTREGA HAGO UN METODO A PARTE
         public async Task<Company> GetCompanyProfileByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getCompanyByUserID.php?id_user={id}");
+            var response = await _httpClient.GetAsync($"http://localhost/silas/endpoints/getCompanyByUserID.php?id_user={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
@@ -246,17 +246,18 @@ namespace Silas.Models.Companies
             var updateCompany = new
             {
                 id_user = company.IdUser,
-                name = company.Name,
-                address = company.Adress,  // Mapeamos la propiedad "Adress" a "address"
+                adress = company.Adress,
                 telephone = company.Telephone,
                 contact = company.Contact,
                 mobile = company.Mobile
             };
+            Console.WriteLine("JSON creado(update company): " + updateCompany);
             var json = JsonSerializer.Serialize(updateCompany);
+            Console.WriteLine("JSON creado (json): " + json);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
-                var response = await _httpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateCompanyDetails.php", content);
+                var response = await _httpClient.PostAsync("http://localhost/silas/endpoints/updateCompanyProfile.php", content);
                 response.EnsureSuccessStatusCode();
                 return response.IsSuccessStatusCode;
             }

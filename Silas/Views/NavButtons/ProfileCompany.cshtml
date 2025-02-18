@@ -3,21 +3,21 @@
 <div class="company-profile">
     <form id="editCompanyForm" method="post" action="/Company/UpdateProfile">
         <!-- Campo oculto para el id de la empresa -->
-        <input type="hidden" name="id_user" value="@Model.IdUser" />
+        <input type="hidden" name="IdUser" value="@Model.IdUser" />
 
         <table class="table table-borderless">
             <tr>
                 <th>Nombre</th>
                 <td>
                     <span class="read-only">@Model.Name</span>
-                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;" />
+                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;" readonly/>
                 </td>
             </tr>
             <tr>
                 <th>Dirección</th>
                 <td>
                     <span class="read-only">@Model.Adress</span>
-                    <input type="text" name="address" class="form-control edit-field" value="@Model.Adress" style="display:none;" />
+                    <input type="text" name="adress" class="form-control edit-field" value="@Model.Adress" style="display:none;" />
                 </td>
             </tr>
             <tr>
@@ -70,7 +70,7 @@
             e.preventDefault(); // Evita el envío tradicional
             var formData = $(this).serialize();
             console.log("Datos enviados:", formData);
-            var userId = $("input[name='id_user']").val();
+            var userId = $("input[name='IdUser']").val();
             console.log("userId recuperado:", userId);
             $.ajax({
                 url: '/Company/UpdateProfile', // Endpoint en CompanyController
@@ -91,7 +91,7 @@
 
         // Al hacer clic en "Cancelar", se recarga el perfil actual sin modificar nada.
         $("#cancelCompanyButton").click(function(){
-            var userId = $("input[name='id_user']").val();
+            var userId = $("input[name='IdUser']").val();
             $.get('/NavButtons/OnClick', { actionName: "PerfilCompany", superID: userId }, function(html){
                 $('#central_panel').html(html);
             });

@@ -213,7 +213,7 @@ namespace Silas.Controllers
 
                 // Perfil de Empresa
                 case "PerfilCompany":
-                    var companyProfile = await _companyService.GetCompanyByIdAsync(superID);
+                    var companyProfile = await _companyService.GetCompanyProfileByIdAsync(superID);
                     if (companyProfile == null)
                         return NotFound();
 
