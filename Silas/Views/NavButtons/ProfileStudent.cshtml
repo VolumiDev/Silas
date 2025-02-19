@@ -11,35 +11,35 @@
                 <th>NIE</th>
                 <td>
                     <span class="read-only">@Model.Nie</span>
-                    <input type="text" name="nie" class="form-control edit-field" value="@Model.Nie" style="display:none;" readonly/>
+                    <input type="text" name="nie" class="form-control edit-field" value="@Model.Nie" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
                 <th>Nombre</th>
                 <td>
                     <span class="read-only">@Model.Name</span>
-                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;" readonly/>
+                    <input type="text" name="name" class="form-control edit-field" value="@Model.Name" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
                 <th>Apellidos</th>
                 <td>
                     <span class="read-only">@Model.Surname</span>
-                    <input type="text" name="surname" class="form-control edit-field" value="@Model.Surname" style="display:none;" readonly/>
+                    <input type="text" name="surname" class="form-control edit-field" value="@Model.Surname" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
                 <th>Género</th>
                 <td>
                     <span class="read-only">@Model.Gendre</span>
-                    <input type="text" name="gendre" class="form-control edit-field" value="@Model.Gendre" style="display:none;" readonly/>
+                    <input type="text" name="gendre" class="form-control edit-field" value="@Model.Gendre" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
                 <th>Fecha de Nacimiento</th>
                 <td>
                     <span class="read-only">@Model.Birthdate.ToString("dd/MM/yyyy")</span>
-                    <input type="date" name="birthdate" class="form-control edit-field" value="@Model.Birthdate.ToString("yyyy-MM-dd")" style="display:none;" readonly/>
+                    <input type="date" name="birthdate" class="form-control edit-field" value="@Model.Birthdate.ToString("yyyy-MM-dd")" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
@@ -60,7 +60,7 @@
                 <th>Nacionalidad</th>
                 <td>
                     <span class="read-only">@Model.Nationality</span>
-                    <input type="text" name="nationality" class="form-control edit-field" value="@Model.Nationality" style="display:none;" readonly/>
+                    <input type="text" name="nationality" class="form-control edit-field" value="@Model.Nationality" style="display:none;background-color:lightgrey" readonly />
                 </td>
             </tr>
             <tr>
@@ -92,18 +92,18 @@
                 <th>Año de nacimiento</th>
                 <td>
                     <span class="read-only">@Model.Year</span>
-                    <input type="text" name="year" class="form-control edit-field" value="@Model.Year" style="display:none; background-color:dimgrey" readonly/>
+                    <input type="text" name="year" class="form-control edit-field" value="@Model.Year" style="display:none; background-color:lightgrey" readonly/>
                 </td>
             </tr>
-                    <!--Fecha de registro-->
-                    <input hidden type="number" name="RegisterDate" class="form-control edit-field" value="@Model.RegisterDate" style="display:none;" />
+            <!--REGISTER DATE-->
+            <input type="hidden" name="registerdate" class="form-control edit-field" value="@Model.RegisterDate" style="display:none;" readonly />
             <tr>
                 <th>CV</th>
                 <td>
                     <span class="read-only">@Model.Cv</span>
                     <input type="text" name="cv" class="form-control edit-field" value="@Model.Cv" style="display:none;" />
                 </td>
-            </tr>
+            </tr> 
         </table>
 
         <div class="form-group text-right mt-3">

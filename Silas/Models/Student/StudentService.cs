@@ -67,7 +67,7 @@ namespace Silas.Models.Student
         }
         public async Task<Student> GetStudentByIdAsync(int id)
         {
-            var response = await _HttpClient.GetAsync($"http://localhost/silas/endpoints/getStudentByUserID.php?id={id}");
+            var response = await _HttpClient.GetAsync($"http://localhost/silas/endpoints/getStudentByUserID.php?id_user={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
