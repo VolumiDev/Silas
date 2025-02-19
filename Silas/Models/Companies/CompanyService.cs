@@ -232,7 +232,7 @@ namespace Silas.Models.Companies
         //PREVIO A LA ENTREGA HAGO UN METODO A PARTE
         public async Task<Company> GetCompanyProfileByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"http://localhost/silas/endpoints/getCompanyByUserID.php?id_user={id}");
+            var response = await _httpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getCompanyByUserID.php?id_user={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
@@ -257,7 +257,7 @@ namespace Silas.Models.Companies
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
-                var response = await _httpClient.PostAsync("http://localhost/silas/endpoints/updateCompanyProfile.php", content);
+                var response = await _httpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateCompanyProfile.php", content);
                 response.EnsureSuccessStatusCode();
                 return response.IsSuccessStatusCode;
             }

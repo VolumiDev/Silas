@@ -67,7 +67,7 @@ namespace Silas.Models.Student
         }
         public async Task<Student> GetStudentByIdAsync(int id)
         {
-            var response = await _HttpClient.GetAsync($"http://localhost/silas/endpoints/getStudentByUserID.php?id_user={id}");
+            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentByUserID.php?id_user={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
@@ -99,7 +99,7 @@ namespace Silas.Models.Student
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
-                var response = await _HttpClient.PostAsync("http://localhost/silas/endpoints/updateStudent.php", content);
+                var response = await _HttpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateStudent.php", content);
                 response.EnsureSuccessStatusCode();
                 return response.IsSuccessStatusCode;
             }
