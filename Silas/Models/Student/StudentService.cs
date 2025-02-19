@@ -67,8 +67,7 @@ namespace Silas.Models.Student
         }
         public async Task<Student> GetStudentByIdAsync(int id)
         {
-            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentByUserID.php?id_student={id}");
-
+            var response = await _HttpClient.GetAsync($"http://volumidev.duckdns.org/silasapp/api/endpoint/getStudentByUserID.php?id_user={id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             Console.WriteLine("JSON recibido: " + json);
@@ -79,14 +78,36 @@ namespace Silas.Models.Student
 
         public async Task<bool> UpdateStudentAsync(Student student)
         {
-            var json = JsonSerializer.Serialize(student);
+            var updateStudent = new
+            {
+                id_user = student.IdUser,
+                nie = student.Nie,
+                name = student.Name,
+                surname = student.Surname,
+                gendre = student.Gendre,
+                birthdate = student.Birthdate,
+                phone = student.Phone,
+                emer_phone = student.EmerPhone,
+                nationality = student.Nationality,
+                car = student.Car,
+                address = student.Address,
+                year = student.Year,
+                register_date = student.RegisterDate,
+                cv = student.Cv,
+            };
+            var json = JsonSerializer.Serialize(updateStudent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            // Suponiendo que el endpoint para actualizar es updateStudent.php
-            var response = await _HttpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateStudentProfile.php", content);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _HttpClient.PostAsync("http://volumidev.duckdns.org/silasapp/api/endpoint/updateStudent.php", content);
+                response.EnsureSuccessStatusCode();
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
         }
-
-
 
         /*public async Task<Student> GetStudentByIdAsync(int id)
         {

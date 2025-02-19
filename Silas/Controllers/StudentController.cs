@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Silas.Models;
+using Silas.Models.Companies;
 using Silas.Models.Student;
 using System.Threading.Tasks;
 
@@ -17,7 +19,11 @@ namespace Silas.Controllers
         {
             //GET DETALLES DE ALUMNO
             var student = await _studentService.GetStudentByIdAsync(id);
-            return View(student);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return PartialView("~/Views/NavButtons/ProfileStudent.cshtml", student);
         }
 
         [HttpPost]
